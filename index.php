@@ -1,18 +1,4 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Parcel Delivery</title>
-
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-
-    <link href="css/style.css" rel="stylesheet" />
-  </head>
+<?php include 'includes/header.php'; ?>
 
   <body>
     <!-- NAVBAR -->
@@ -162,7 +148,7 @@
 
           <div class="col-md-6">
             <img
-              src="https://via.placeholder.com/500x300"
+              src="images/img1.jpg"
               class="img-fluid rounded"
             />
           </div>
@@ -186,7 +172,7 @@
 
           <div class="col-md-6 order-md-1">
             <img
-              src="https://via.placeholder.com/500x300"
+              src="images/img2.jpg"
               class="img-fluid rounded"
             />
           </div>
