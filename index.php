@@ -1,253 +1,226 @@
 <?php include 'includes/header.php'; ?>
 
-  <body>
-    <!-- NAVBAR -->
+<body>
+  <!-- NAVBAR -->
 
-    <nav class="navbar navbar-expand-lg bg-white border-bottom">
-      <div class="container">
-        <a class="navbar-brand fw-bold" href="#">ParcelPro</a>
+  <nav class="navbar navbar-expand-lg bg-white border-bottom">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">ParcelPro</a>
 
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navmenu"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <div
-          class="collapse navbar-collapse justify-content-between"
-          id="navmenu"
-        >
-          <ul class="navbar-nav mx-auto">
+      <div class="collapse navbar-collapse justify-content-between" id="navmenu">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Send Parcel</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Track Parcel</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Help / FAQ</a>
+          </li>
+        </ul>
+
+        <div>
+          <a href="#" class="btn btn-outline-primary">Login / Register</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+
+  <section class="hero">
+    <div class="container">
+      <h2 class="text-center mb-4">Send or Track Your Parcel</h2>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <ul class="nav nav-tabs mb-3" id="serviceTabs">
             <li class="nav-item">
-              <a class="nav-link" href="#">Send Parcel</a>
+              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#send">
+                Send Parcel
+              </button>
             </li>
+
             <li class="nav-item">
-              <a class="nav-link" href="#">Track Parcel</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Help / FAQ</a>
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#track">
+                Track Parcel
+              </button>
             </li>
           </ul>
 
-          <div>
-            <a href="#" class="btn btn-outline-primary">Login / Register</a>
-          </div>
-        </div>
-      </div>
-    </nav>
+          <div class="tab-content">
+            <!-- SEND TAB -->
 
-    <!-- HERO -->
+            <div class="tab-pane fade show active" id="send">
+              <div class="row g-2">
+                <div class="col-md">
+                  <input class="form-control" placeholder="From postcode" />
+                </div>
 
-    <section class="hero">
-      <div class="container">
-        <h2 class="text-center mb-4">Send or Track Your Parcel</h2>
+                <div class="col-md">
+                  <input class="form-control" placeholder="To postcode" />
+                </div>
 
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <ul class="nav nav-tabs mb-3" id="serviceTabs">
-              <li class="nav-item">
-                <button
-                  class="nav-link active"
-                  data-bs-toggle="tab"
-                  data-bs-target="#send"
-                >
-                  Send Parcel
-                </button>
-              </li>
+                <div class="col-md">
+                  <input class="form-control" placeholder="Parcel weight (kg)" />
+                </div>
 
-              <li class="nav-item">
-                <button
-                  class="nav-link"
-                  data-bs-toggle="tab"
-                  data-bs-target="#track"
-                >
-                  Track Parcel
-                </button>
-              </li>
-            </ul>
-
-            <div class="tab-content">
-              <!-- SEND TAB -->
-
-              <div class="tab-pane fade show active" id="send">
-                <div class="row g-2">
-                  <div class="col-md">
-                    <input class="form-control" placeholder="From postcode" />
-                  </div>
-
-                  <div class="col-md">
-                    <input class="form-control" placeholder="To postcode" />
-                  </div>
-
-                  <div class="col-md">
-                    <input
-                      class="form-control"
-                      placeholder="Parcel weight (kg)"
-                    />
-                  </div>
-
-                  <div class="col-md-auto">
-                    <button class="btn btn-primary">Get Quote</button>
-                  </div>
+                <div class="col-md-auto">
+                  <button class="btn btn-primary">Get Quote</button>
                 </div>
               </div>
+            </div>
 
-              <!-- TRACK TAB -->
+            <!-- TRACK TAB -->
 
-              <div class="tab-pane fade" id="track">
-                <div class="row g-2">
-                  <div class="col-md">
-                    <input
-                      class="form-control"
-                      placeholder="Reference number"
-                    />
-                  </div>
+            <div class="tab-pane fade" id="track">
+              <div class="row g-2">
+                <div class="col-md">
+                  <input class="form-control" placeholder="Reference number" />
+                </div>
 
-                  <div class="col-md-auto">
-                    <button class="btn btn-primary">Track Parcel</button>
-                  </div>
+                <div class="col-md-auto">
+                  <button class="btn btn-primary">Track Parcel</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- PROMO BANNER -->
+  <!-- PROMO BANNER -->
 
-    <div class="container mt-4">
-      <div class="alert alert-info alert-dismissible fade show">
-        <strong>Limited Time Offer:</strong> 10% off parcels under 2kg
+  <div class="container mt-4">
+    <div class="alert alert-info alert-dismissible fade show">
+      <strong>Limited Time Offer:</strong> 10% off parcels under 2kg
 
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="alert"
-        ></button>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  </div>
+
+  <!-- FEATURE 1 -->
+
+  <section class="feature-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h3>Reliable Parcel Delivery Within Your Area</h3>
+
+          <p>
+            Our parcel delivery service ensures safe and reliable
+            transportation of your packages within the supported delivery
+            zones.
+          </p>
+        </div>
+
+        <div class="col-md-6">
+          <img src="images/img1.jpg" class="img-fluid rounded" />
+        </div>
       </div>
     </div>
+  </section>
 
-    <!-- FEATURE 1 -->
+  <!-- FEATURE 2 -->
 
-    <section class="feature-section">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-md-6">
-            <h3>Reliable Parcel Delivery Within Your Area</h3>
+  <section class="feature-section bg-light">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6 order-md-2">
+          <h3>Track Your Parcel Anytime</h3>
 
-            <p>
-              Our parcel delivery service ensures safe and reliable
-              transportation of your packages within the supported delivery
-              zones.
-            </p>
-          </div>
+          <p>
+            Customers can easily track the current location and delivery
+            status of their parcels through our tracking system.
+          </p>
+        </div>
 
-          <div class="col-md-6">
-            <img
-              src="images/img1.jpg"
-              class="img-fluid rounded"
-            />
-          </div>
+        <div class="col-md-6 order-md-1">
+          <img src="images/img2.jpg" class="img-fluid rounded" />
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- FEATURE 2 -->
+  <!-- INFO BLOCK -->
 
-    <section class="feature-section bg-light">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-md-6 order-md-2">
-            <h3>Track Your Parcel Anytime</h3>
+  <section class="feature-section text-center">
+    <div class="container">
+      <h3>Simple, Transparent and Reliable</h3>
 
-            <p>
-              Customers can easily track the current location and delivery
-              status of their parcels through our tracking system.
-            </p>
-          </div>
-
-          <div class="col-md-6 order-md-1">
-            <img
-              src="images/img2.jpg"
-              class="img-fluid rounded"
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- INFO BLOCK -->
-
-    <section class="feature-section text-center">
-      <div class="container">
-        <h3>Simple, Transparent and Reliable</h3>
-
-        <p class="mt-3">
-          Our system is designed to provide a clear and user-friendly parcel
-          delivery experience with transparent pricing and real-time delivery
-          updates.
-        </p>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-
-    <footer class="footer">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4">
-            <h5>ParcelPro</h5>
-            <p>Reliable parcel delivery service within supported areas.</p>
-          </div>
-
-          <div class="col-md-4">
-            <h6>Navigation</h6>
-
-            <ul class="list-unstyled">
-              <li><a href="#">Send Parcel</a></li>
-              <li><a href="#">Track Parcel</a></li>
-              <li><a href="#">Help / FAQ</a></li>
-            </ul>
-          </div>
-
-          <div class="col-md-4">
-            <h6>Support</h6>
-
-            <p>Email: support@parcelpro.com</p>
-            <p>Phone: +44 123 456 789</p>
-
-            <p class="small">
-              <a href="#">Terms</a> | <a href="#">Privacy</a> |
-              <a href="#">Cookies</a>
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-    <!-- COOKIE BOX -->
-
-    <div class="cookie-box">
-      <p class="mb-2">
-        <strong>Cookies</strong><br />
-        We use cookies to improve your experience.
+      <p class="mt-3">
+        Our system is designed to provide a clear and user-friendly parcel
+        delivery experience with transparent pricing and real-time delivery
+        updates.
       </p>
+    </div>
+  </section>
 
-      <div class="d-flex gap-2 flex-wrap">
-        <button class="btn btn-sm btn-outline-secondary">
-          Cookie Settings
-        </button>
+  <!-- FOOTER -->
 
-        <button class="btn btn-sm btn-outline-secondary">Reject All</button>
+  <footer class="footer">
 
-        <button class="btn btn-sm btn-primary">Accept All</button>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h5>ParcelPro</h5>
+          <p>Reliable parcel delivery service.</p>
+        </div>
+
+        <div class="col-md-4">
+          <h6>Navigation</h6>
+          <ul class="list-unstyled">
+            <li><a href="/send.php">Send Parcel</a></li>
+            <li><a href="/track.php">Track Parcel</a></li>
+            <li><a href="/help.php">Help / FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-4">
+          <h6>Support</h6>
+          <p>Email: support@example.com</p>
+          <p>Phone: +44 123456789</p>
+        </div>
       </div>
+
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>
+
+<!-- COOKIE BOX -->
+
+<div class="cookie-box">
+  <p class="mb-2">
+    <strong>Cookies</strong><br />
+    We use cookies to improve your experience.
+  </p>
+
+  <div class="d-flex gap-2 flex-wrap">
+    <button class="btn btn-sm btn-outline-secondary">
+      Cookie Settings
+    </button>
+
+    <button class="btn btn-sm btn-outline-secondary">Reject All</button>
+
+    <button class="btn btn-sm btn-primary">Accept All</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>
