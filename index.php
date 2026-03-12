@@ -2,7 +2,7 @@
 
 <body>
   <!-- NAVBAR -->
-   
+
   <?php include 'includes/navbar.php'; ?>
 
   <!-- HERO -->
@@ -139,6 +139,9 @@
   <!-- FOOTER -->
   <?php include 'includes/footer.php'; ?>
 
+  <!-- LOGIN MODAL -->
+  <?php include 'includes/login_modal.php'; ?>
+
   <!-- COOKIE BOX -->
 
   <div class="cookie-box">
@@ -157,10 +160,6 @@
       <button class="btn btn-sm btn-primary">Accept All</button>
     </div>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/main.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
