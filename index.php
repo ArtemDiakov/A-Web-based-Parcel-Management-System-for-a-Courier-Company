@@ -2,34 +2,8 @@
 
 <body>
   <!-- NAVBAR -->
-
-  <nav class="navbar navbar-expand-lg bg-white border-bottom">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="#">ParcelPro</a>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse justify-content-between" id="navmenu">
-        <ul class="navbar-nav mx-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Send Parcel</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Track Parcel</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Help / FAQ</a>
-          </li>
-        </ul>
-
-        <div>
-          <a href="#" class="btn btn-outline-primary">Login / Register</a>
-        </div>
-      </div>
-    </div>
-  </nav>
+   
+  <?php include 'includes/navbar.php'; ?>
 
   <!-- HERO -->
 
@@ -163,64 +137,30 @@
   </section>
 
   <!-- FOOTER -->
+  <?php include 'includes/footer.php'; ?>
 
-  <footer class="footer">
+  <!-- COOKIE BOX -->
 
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <h5>ParcelPro</h5>
-          <p>Reliable parcel delivery service.</p>
-        </div>
+  <div class="cookie-box">
+    <p class="mb-2">
+      <strong>Cookies</strong><br />
+      We use cookies to improve your experience.
+    </p>
 
-        <div class="col-md-4">
-          <h6>Navigation</h6>
-          <ul class="list-unstyled">
-            <li><a href="/send.php">Send Parcel</a></li>
-            <li><a href="/track.php">Track Parcel</a></li>
-            <li><a href="/help.php">Help / FAQ</a></li>
-          </ul>
-        </div>
+    <div class="d-flex gap-2 flex-wrap">
+      <button class="btn btn-sm btn-outline-secondary">
+        Cookie Settings
+      </button>
 
-        <div class="col-md-4">
-          <h6>Support</h6>
-          <p>Email: support@example.com</p>
-          <p>Phone: +44 123456789</p>
-        </div>
-      </div>
+      <button class="btn btn-sm btn-outline-secondary">Reject All</button>
 
+      <button class="btn btn-sm btn-primary">Accept All</button>
     </div>
-
-  </footer>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
-  <script src="/js/main.js"></script>
-
-</body>
-
-</html>
-
-<!-- COOKIE BOX -->
-
-<div class="cookie-box">
-  <p class="mb-2">
-    <strong>Cookies</strong><br />
-    We use cookies to improve your experience.
-  </p>
-
-  <div class="d-flex gap-2 flex-wrap">
-    <button class="btn btn-sm btn-outline-secondary">
-      Cookie Settings
-    </button>
-
-    <button class="btn btn-sm btn-outline-secondary">Reject All</button>
-
-    <button class="btn btn-sm btn-primary">Accept All</button>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
