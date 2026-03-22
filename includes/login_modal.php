@@ -1,84 +1,101 @@
 <div class="modal fade" id="loginModal" tabindex="-1">
-
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content p-4">
 
             <!-- STEP 1 -->
+            <form id="emailCheckForm" novalidate>
+                <div id="loginStep1">
+                    <h4 class="text-center mb-4">Login or Sign-Up</h4>
 
-            <div id="loginStep1">
+                    <div class="d-grid gap-2 mb-3">
+                        <button type="button" class="btn btn-outline-dark">Continue with Google</button>
+                        <button type="button" class="btn btn-outline-dark">Continue with Apple</button>
+                        <button type="button" class="btn btn-outline-dark">Continue with Microsoft</button>
+                    </div>
 
-                <h4 class="text-center mb-4">Login or Sign-Up</h4>
+                    <div class="text-center my-3">
+                        <hr>
+                        <span class="position-relative px-2 bg-white" style="top:-22px;">OR</span>
+                    </div>
 
-                <div class="d-grid gap-2 mb-3">
+                    <div class="mb-3">
+                        <input type="email" class="form-control" id="loginEmail" placeholder="Email Address" required>
+                        <div class="invalid-feedback">
+                            Please enter a valid email address.
+                        </div>
+                    </div>
 
-                    <button class="btn btn-outline-dark">Continue with Google</button>
-                    <button class="btn btn-outline-dark">Continue with Apple</button>
-                    <button class="btn btn-outline-dark">Continue with Microsoft</button>
+                    <button type="submit" class="btn btn-primary w-100">Continue</button>
 
+                    <p class="text-center small mt-3">
+                        By continuing, you agree to Terms & Conditions.
+                    </p>
                 </div>
-
-                <div class="text-center my-3">
-                    <hr>
-                    <span class="position-relative px-2 bg-white" style="top:-22px;">OR</span>
-                </div>
-
-                <input type="email" class="form-control mb-3" id="loginEmail" placeholder="Email Address">
-
-                <button class="btn btn-primary w-100" onclick="checkEmail()">Continue</button>
-
-                <p class="text-center small mt-3">
-                    By continuing, you agree to Terms & Conditions.
-                </p>
-
-            </div>
-
+            </form>
 
             <!-- STEP 2 PASSWORD -->
-
             <div id="loginStep2" style="display:none;">
-
                 <h4 class="text-center mb-4">Enter Your Password</h4>
 
-                <form method="POST" action="/auth/login.php">
-
+                <form method="POST" action="/auth/login.php" id="loginForm" novalidate>
                     <input type="hidden" name="email" id="loginEmailHidden">
 
-                    <input type="password" name="password" class="form-control mb-3" placeholder="Password">
+                    <div class="mb-3">
+                        <input type="password" name="password" class="form-control" placeholder="Password" required>
+                        <div class="invalid-feedback">
+                            Please enter your password.
+                        </div>
+                    </div>
 
                     <div class="text-end mb-3">
                         <a href="#" class="small">Forgot your password?</a>
                     </div>
 
-                    <button class="btn btn-primary w-100">Login</button>
-
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
                 </form>
-
             </div>
 
-
             <!-- STEP 3 REGISTER -->
-
             <div id="loginStep3" style="display:none;">
-
                 <h4 class="text-center mb-4">Create Your Account</h4>
 
-                <form method="POST" action="/auth/register.php">
-
+                <form method="POST" action="/auth/register.php" id="registerForm" novalidate>
                     <input type="hidden" name="email" id="registerEmailHidden">
 
-                    <input class="form-control mb-3" name="full_name" placeholder="Full Name*" required>
+                    <div class="mb-3">
+                        <input class="form-control" name="full_name" placeholder="Full Name*" required maxlength="100">
+                        <div class="invalid-feedback">
+                            Please enter your full name.
+                        </div>
+                    </div>
 
-                    <input class="form-control mb-3" name="phone" placeholder="Phone Number*" required>
+                    <div class="mb-3">
+                        <input class="form-control" name="phone" placeholder="Phone Number*" required
+                            pattern="^(\+44|0)7\d{9}$">
+                        <div class="invalid-feedback">
+                            Enter a valid UK mobile number (e.g. 07911123456 or +447911123456).
+                        </div>
+                    </div>
 
-                    <input type="password" class="form-control mb-3" name="password" placeholder="Password*" required>
+                    <div class="mb-3">
+                        <input type="password" class="form-control" name="password" placeholder="Password*" required
+                            minlength="8" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,72}$">
+                        <div class="invalid-feedback">
+                            Password must be 8-72 characters and include an uppercase letter, lowercase letter, and
+                            number.
+                        </div>
+                    </div>
 
-                    <input type="password" class="form-control mb-3" name="confirm_password"
-                        placeholder="Confirm Password*" required>
-
-                    <button class="btn btn-primary w-100">Continue</button>
-
+                    <div class="mb-3">
+                        <input type="password" class="form-control" name="confirm_password"
+                            placeholder="Confirm Password*" required>
+                        <div class="invalid-feedback">
+                            Please confirm your password.
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100">Continue</button>
                 </form>
-
             </div>
 
         </div>

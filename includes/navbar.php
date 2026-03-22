@@ -57,7 +57,7 @@
                         <button class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">
 
-                            My Account
+                            <?= htmlspecialchars($_SESSION['full_name']) ?>
 
                         </button>
 
