@@ -2,15 +2,19 @@
 session_start();
 require '../includes/db.php';
 
+header('Content-Type: application/json');
+
 $email = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    die("Invalid email.");
+    echo json_encode(['success' => false, 'message' => 'Invalid email.']);
+    exit;
 }
 
 if ($password === '') {
-    die("Password is required.");
+    echo json_encode(['success' => false, 'message' => 'Password is required.']);
+    exit;
 }
 
 $query = "SELECT id, full_name, password_hash, role, is_active
@@ -21,18 +25,15 @@ $query = "SELECT id, full_name, password_hash, role, is_active
 $result = pg_query_params($conn, $query, [$email]);
 $user = pg_fetch_assoc($result);
 
-if (!$user || !$user['is_active']) {
-    die("Invalid email or password.");
-}
-
-if (password_verify($password, $user['password_hash'])) {
-    session_regenerate_id(true);
-    $_SESSION['user_id'] = $user['id'];
-    $_SESSION['role'] = $user['role'];
-    $_SESSION['full_name'] = $user['full_name'];
-
-    header("Location: /index.php");
+if (!$user || !$user['is_active'] || !password_verify($password, $user['password_hash'])) {
+    echo json_encode(['success' => false, 'message' => 'Invalid password.']);
     exit;
-} else {
-    die("Invalid email or password.");
 }
+
+// SUCCESS
+session_regenerate_id(true);
+$_SESSION['user_id'] = $user['id'];
+$_SESSION['role'] = $user['role'];
+$_SESSION['full_name'] = $user['full_name'];
+
+echo json_encode(['success' => true]);

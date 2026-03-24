@@ -41,9 +41,16 @@
                     <input type="hidden" name="email" id="loginEmailHidden">
 
                     <div class="mb-3">
-                        <input type="password" name="password" class="form-control" placeholder="Password" required>
-                        <div class="invalid-feedback">
-                            Please enter your password.
+                        <div class="input-group">
+                            <input type="password" id="loginPassword" name="password" class="form-control" placeholder="Password" required>
+
+                            <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('loginPassword', this)">
+                                <i class="bi bi-eye"></i>
+                            </button>
+
+                            <div class="invalid-feedback">
+                                Please enter your password.
+                            </div>
                         </div>
                     </div>
 
@@ -78,22 +85,38 @@
                     </div>
 
                     <div class="mb-3">
-                        <input type="password" class="form-control" name="password" placeholder="Password*" required
-                            minlength="8" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,72}$">
-                        <div class="invalid-feedback">
-                            Password must be 8-72 characters and include an uppercase letter, lowercase letter, and
-                            number.
+                        <div class="input-group has-validation">
+                            <input type="password" id="registerPassword" class="form-control" name="password"
+                                placeholder="Password*" required minlength="8"
+                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,72}$">
+
+                            <button type="button" class="btn btn-outline-secondary"
+                                onclick="togglePassword('registerPassword', this)">
+                                <i class="bi bi-eye"></i>
+                            </button>
+
+                            <div class="invalid-feedback">
+                                Password must be 8-72 characters and include uppercase, lowercase and number.
+                            </div>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <input type="password" class="form-control" name="confirm_password"
-                            placeholder="Confirm Password*" required>
-                        <div class="invalid-feedback">
-                            Please confirm your password.
+                        <div class="input-group has-validation">
+                            <input type="password" id="registerConfirmPassword" class="form-control"
+                                name="confirm_password" placeholder="Confirm Password*" required>
+
+                            <button type="button" class="btn btn-outline-secondary"
+                                onclick="togglePassword('registerConfirmPassword', this)">
+                                <i class="bi bi-eye"></i>
+                            </button>
+
+                            <div class="invalid-feedback">
+                                Please confirm your password.
+                            </div>
                         </div>
                     </div>
-                    
+
                     <button type="submit" class="btn btn-primary w-100">Continue</button>
                 </form>
             </div>

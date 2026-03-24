@@ -2,6 +2,8 @@
 session_start();
 require '../includes/db.php';
 
+header('Content-Type: application/json');
+
 $name = trim($_POST['full_name'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $phone = trim($_POST['phone'] ?? '');
@@ -20,7 +22,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 150) {
     $errors[] = "Invalid email address.";
 }
 
-// Phone (simple UK-friendly pattern, adjustable)
+// Phone
 if (!preg_match('/^(?:\+44|0)7\d{9}$/', preg_replace('/\s+/', '', $phone))) {
     $errors[] = "Enter a valid UK mobile number.";
 }
@@ -33,7 +35,7 @@ if (strlen($password) < 8 || strlen($password) > 72) {
     !preg_match('/[a-z]/', $password) ||
     !preg_match('/[0-9]/', $password)
 ) {
-    $errors[] = "Password must contain at least one uppercase letter, one lowercase letter, and one number.";
+    $errors[] = "Password must contain uppercase, lowercase and number.";
 }
 
 if ($password !== $confirm) {
@@ -41,13 +43,15 @@ if ($password !== $confirm) {
 }
 
 if (!empty($errors)) {
-    die(implode("<br>", array_map('htmlspecialchars', $errors)));
+    echo json_encode(['success' => false, 'message' => $errors[0]]);
+    exit;
 }
 
-// Check duplicate email
+// Duplicate email
 $check = pg_query_params($conn, "SELECT id FROM users WHERE email = $1 LIMIT 1", [$email]);
 if (pg_fetch_assoc($check)) {
-    die("An account with this email already exists.");
+    echo json_encode(['success' => false, 'message' => 'Email already exists.']);
+    exit;
 }
 
 $hash = password_hash($password, PASSWORD_DEFAULT);
@@ -60,7 +64,8 @@ RETURNING id, full_name, role";
 $result = pg_query_params($conn, $query, [$name, $email, $phone, $hash]);
 
 if (!$result) {
-    die("Registration failed.");
+    echo json_encode(['success' => false, 'message' => 'Registration failed.']);
+    exit;
 }
 
 $user = pg_fetch_assoc($result);
@@ -70,5 +75,5 @@ $_SESSION['user_id'] = $user['id'];
 $_SESSION['role'] = $user['role'];
 $_SESSION['full_name'] = $user['full_name'];
 
-header("Location: /index.php");
+echo json_encode(['success' => true]);
 exit;

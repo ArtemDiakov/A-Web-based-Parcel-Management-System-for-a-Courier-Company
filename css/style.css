@@ -40,3 +40,12 @@ body {
   max-width: 350px;
   z-index: 999;
 }
+
+/* Fix password eye button border to match input */
+.input-group .btn {
+  border-color: #ced4da; /* same as Bootstrap input */
+}
+
+.input-group .btn {
+  border-left: 0;
+}

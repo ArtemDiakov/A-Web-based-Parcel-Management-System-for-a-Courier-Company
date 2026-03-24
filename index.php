@@ -136,14 +136,13 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <?php include 'includes/footer.php'; ?>
-
   <!-- LOGIN MODAL -->
   <?php include 'includes/login_modal.php'; ?>
 
-  <!-- COOKIE BOX -->
+  <!-- FOOTER -->
+  <?php include 'includes/footer.php'; ?>
 
+  <!-- COOKIE BOX -->
   <div class="cookie-box">
     <p class="mb-2">
       <strong>Cookies</strong><br />
