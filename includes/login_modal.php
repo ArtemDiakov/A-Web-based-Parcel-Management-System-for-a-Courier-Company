@@ -1,9 +1,13 @@
+<?php require_once __DIR__ . '/csrf.php'; ?>
+
 <div class="modal fade" id="loginModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content p-4">
 
             <!-- STEP 1 -->
             <form id="emailCheckForm" novalidate>
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(generateCsrfToken(), ENT_QUOTES, 'UTF-8') ?>">
+
                 <div id="loginStep1">
                     <h4 class="text-center mb-4">Login or Sign-Up</h4>
 
@@ -19,7 +23,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <input type="email" class="form-control" id="loginEmail" placeholder="Email Address" required>
+                        <input type="email" class="form-control" id="loginEmail" placeholder="Email Address" required maxlength="150">
                         <div class="invalid-feedback">
                             Please enter a valid email address.
                         </div>
@@ -38,10 +42,11 @@
                 <h4 class="text-center mb-4">Enter Your Password</h4>
 
                 <form method="POST" action="/auth/login.php" id="loginForm" novalidate>
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(generateCsrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                     <input type="hidden" name="email" id="loginEmailHidden">
 
                     <div class="mb-3">
-                        <div class="input-group">
+                        <div class="input-group has-validation">
                             <input type="password" id="loginPassword" name="password" class="form-control" placeholder="Password" required>
 
                             <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('loginPassword', this)">
@@ -67,6 +72,7 @@
                 <h4 class="text-center mb-4">Create Your Account</h4>
 
                 <form method="POST" action="/auth/register.php" id="registerForm" novalidate>
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(generateCsrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                     <input type="hidden" name="email" id="registerEmailHidden">
 
                     <div class="mb-3">
@@ -78,7 +84,7 @@
 
                     <div class="mb-3">
                         <input class="form-control" name="phone" placeholder="Phone Number*" required
-                            pattern="^(\+44|0)7\d{9}$">
+                            pattern="^(?:\+44|0)7\d{9}$">
                         <div class="invalid-feedback">
                             Enter a valid UK mobile number (e.g. 07911123456 or +447911123456).
                         </div>

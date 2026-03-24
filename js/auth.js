@@ -1,13 +1,38 @@
 function checkEmail() {
-  let email = document.getElementById("loginEmail").value.trim();
+  const emailInput = document.getElementById("loginEmail");
+  const emailCheckForm = document.getElementById("emailCheckForm");
+  const email = emailInput.value.trim();
+  const csrf = document.querySelector(
+    '#emailCheckForm input[name="csrf_token"]',
+  ).value;
+
+  // reset previous state
+  emailInput.classList.remove("is-valid", "is-invalid");
 
   fetch("/auth/check_email.php", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: "email=" + encodeURIComponent(email),
+    body:
+      "email=" +
+      encodeURIComponent(email) +
+      "&csrf_token=" +
+      encodeURIComponent(csrf),
   })
     .then((response) => response.json())
     .then((data) => {
+      if (data.success === false) {
+        emailInput.classList.remove("is-valid");
+        emailInput.classList.add("is-invalid");
+        emailCheckForm.classList.add("was-validated");
+
+        const feedback =
+          emailInput.parentElement.querySelector(".invalid-feedback");
+        if (feedback && data.message) {
+          feedback.innerText = data.message;
+        }
+        return;
+      }
+
       if (data.exists) {
         document.getElementById("loginStep1").style.display = "none";
         document.getElementById("loginStep2").style.display = "block";
@@ -45,7 +70,8 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
 
       const passwordInput = document.getElementById("loginPassword");
-      const feedback = passwordInput.parentElement.querySelector(".invalid-feedback");
+      const feedback =
+        passwordInput.parentElement.querySelector(".invalid-feedback");
 
       passwordInput.classList.remove("is-invalid");
 
@@ -86,7 +112,9 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
 
       const password = registerForm.querySelector('input[name="password"]');
-      const confirmPassword = registerForm.querySelector('input[name="confirm_password"]');
+      const confirmPassword = registerForm.querySelector(
+        'input[name="confirm_password"]',
+      );
 
       // reset custom validity
       confirmPassword.setCustomValidity("");
@@ -132,12 +160,18 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("loginStep2").style.display = "none";
       document.getElementById("loginStep3").style.display = "none";
 
-      document.getElementById("loginEmail").value = "";
+      const loginEmail = document.getElementById("loginEmail");
+      if (loginEmail) {
+        loginEmail.value = "";
+        loginEmail.classList.remove("is-valid", "is-invalid");
+      }
 
       const loginEmailHidden = document.getElementById("loginEmailHidden");
       if (loginEmailHidden) loginEmailHidden.value = "";
 
-      const registerEmailHidden = document.getElementById("registerEmailHidden");
+      const registerEmailHidden = document.getElementById(
+        "registerEmailHidden",
+      );
       if (registerEmailHidden) registerEmailHidden.value = "";
 
       const loginPassword = document.getElementById("loginPassword");
@@ -151,7 +185,9 @@ document.addEventListener("DOMContentLoaded", function () {
         registerPassword.value = "";
       }
 
-      const registerConfirmPassword = document.getElementById("registerConfirmPassword");
+      const registerConfirmPassword = document.getElementById(
+        "registerConfirmPassword",
+      );
       if (registerConfirmPassword) {
         registerConfirmPassword.value = "";
         registerConfirmPassword.setCustomValidity("");
@@ -161,7 +197,9 @@ document.addEventListener("DOMContentLoaded", function () {
         form.classList.remove("was-validated");
       });
 
-      const loginFeedback = document.querySelector("#loginStep2 .invalid-feedback");
+      const loginFeedback = document.querySelector(
+        "#loginStep2 .invalid-feedback",
+      );
       if (loginFeedback) {
         loginFeedback.innerText = "Please enter your password.";
       }

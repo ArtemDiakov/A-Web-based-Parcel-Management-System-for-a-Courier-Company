@@ -1,3 +1,5 @@
+<?php require_once __DIR__ . '/csrf.php'; ?>
+
 <nav class="navbar navbar-expand-lg bg-white border-bottom">
 
     <div class="container">
@@ -57,7 +59,7 @@
                         <button class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">
 
-                            <?= htmlspecialchars($_SESSION['full_name']) ?>
+                            <?= htmlspecialchars($_SESSION['full_name'], ENT_QUOTES, 'UTF-8') ?>
 
                         </button>
 
@@ -80,9 +82,10 @@
                             </li>
 
                             <li>
-                                <a class="dropdown-item" href="/logout.php">
-                                    Logout
-                                </a>
+                                <form method="POST" action="/logout.php" class="m-0">
+                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(generateCsrfToken(), ENT_QUOTES, 'UTF-8') ?>">
+                                    <button type="submit" class="dropdown-item">Logout</button>
+                                </form>
                             </li>
 
                         </ul>

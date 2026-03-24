@@ -1,11 +1,17 @@
 <?php
 session_start();
 require '../includes/db.php';
+require '../includes/csrf.php';
 
 header('Content-Type: application/json');
 
+if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) {
+    echo json_encode(['success' => false, 'message' => 'Invalid request.']);
+    exit;
+}
+
 $name = trim($_POST['full_name'] ?? '');
-$email = trim($_POST['email'] ?? '');
+$email = strtolower(trim($_POST['email'] ?? ''));
 $phone = trim($_POST['phone'] ?? '');
 $password = $_POST['password'] ?? '';
 $confirm = $_POST['confirm_password'] ?? '';

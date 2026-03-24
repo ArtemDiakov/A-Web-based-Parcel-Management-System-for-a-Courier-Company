@@ -1,11 +1,25 @@
 <?php
 header('Content-Type: application/json');
 require '../includes/db.php';
+require '../includes/csrf.php';
 
-$email = trim($_POST['email'] ?? '');
+if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) {
+    echo json_encode([
+        'success' => false,
+        'exists' => false,
+        'message' => 'Invalid request.'
+    ]);
+    exit;
+}
+
+$email = strtolower(trim($_POST['email'] ?? ''));
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(["exists" => false]);
+    echo json_encode([
+        'success' => false,
+        'exists' => false,
+        'message' => 'Invalid email address.'
+    ]);
     exit;
 }
 
@@ -14,5 +28,7 @@ $result = pg_query_params($conn, $query, [$email]);
 $user = pg_fetch_assoc($result);
 
 echo json_encode([
-    "exists" => $user ? true : false
+    'success' => true,
+    'exists' => $user ? true : false
 ]);
+exit;

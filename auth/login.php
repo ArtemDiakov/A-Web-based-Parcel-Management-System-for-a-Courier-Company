@@ -1,10 +1,16 @@
 <?php
 session_start();
 require '../includes/db.php';
+require '../includes/csrf.php';
 
 header('Content-Type: application/json');
 
-$email = trim($_POST['email'] ?? '');
+if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) {
+    echo json_encode(['success' => false, 'message' => 'Invalid request.']);
+    exit;
+}
+
+$email = strtolower(trim($_POST['email'] ?? ''));
 $password = $_POST['password'] ?? '';
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -25,7 +31,17 @@ $query = "SELECT id, full_name, password_hash, role, is_active
 $result = pg_query_params($conn, $query, [$email]);
 $user = pg_fetch_assoc($result);
 
-if (!$user || !$user['is_active'] || !password_verify($password, $user['password_hash'])) {
+if (!$user) {
+    echo json_encode(['success' => false, 'message' => 'Invalid password.']);
+    exit;
+}
+
+if ($user['is_active'] !== 't') {
+    echo json_encode(['success' => false, 'message' => 'This account has been disabled.']);
+    exit;
+}
+
+if (!password_verify($password, $user['password_hash'])) {
     echo json_encode(['success' => false, 'message' => 'Invalid password.']);
     exit;
 }
@@ -37,3 +53,4 @@ $_SESSION['role'] = $user['role'];
 $_SESSION['full_name'] = $user['full_name'];
 
 echo json_encode(['success' => true]);
+exit;
