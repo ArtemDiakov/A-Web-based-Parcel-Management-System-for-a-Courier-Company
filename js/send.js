@@ -40,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!enabled) {
         input.classList.remove("is-invalid", "is-valid");
-        delete input.dataset.touched;
       }
     });
   }
@@ -93,12 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
       options.forEach((option) => {
         const card = option.closest(".delivery-option-card");
         if (!card) return;
-
-        if (valid) {
-          card.classList.remove("border-danger");
-        } else {
-          card.classList.add("border-danger");
-        }
+        card.classList.toggle("border-danger", !valid);
       });
     } else if (valid) {
       options.forEach((option) => {
@@ -166,8 +160,19 @@ document.addEventListener("DOMContentLoaded", () => {
     setSectionEnabled(deliverySection, deliveryInputs, parcelValid);
 
     const deliveryValid = parcelValid && validateDeliveryOptions(forceVisual);
-
     submitBtn.disabled = !deliveryValid;
+  }
+
+  function normaliseFieldsBeforeSubmit() {
+    if (form.contact_phone.value) {
+      form.contact_phone.value = form.contact_phone.value.replace(/\s+/g, "");
+    }
+
+    form.querySelectorAll(".postcode-input").forEach((field) => {
+      if (field.value) {
+        field.value = field.value.toUpperCase().replace(/\s+/g, " ").trim();
+      }
+    });
   }
 
   form.querySelectorAll("input, select, textarea").forEach((field) => {
@@ -190,6 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", (e) => {
     attemptedSubmit = true;
+    normaliseFieldsBeforeSubmit();
     updateSections(true);
 
     if (submitBtn.disabled) {

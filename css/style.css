@@ -284,3 +284,27 @@ body {
     line-height: 1.25;
   }
 }
+
+.summary-block p {
+  margin-bottom: 0.35rem;
+}
+
+.quote-box hr {
+  border-color: #e6e1fb;
+}
+
+.quote-box strong.fs-5 {
+  color: var(--primary);
+}
+
+.form-panel .btn-outline-primary,
+.quote-box .btn-outline-primary {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.form-panel .btn-outline-primary:hover,
+.quote-box .btn-outline-primary:hover {
+  background: var(--primary);
+  color: #fff;
+}
