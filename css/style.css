@@ -49,3 +49,238 @@ body {
 .input-group .btn {
   border-left: 0;
 }
+
+.send-hero {
+  padding: 70px 0;
+}
+
+.send-card {
+  border-radius: 18px;
+}
+
+.form-panel,
+.quote-box {
+  background: #fff;
+  border: 1px solid #e9e6f8;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(91, 60, 196, 0.06);
+}
+
+.section-heading h4,
+.section-heading h5 {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.send-message-success {
+  background: #edf9f0;
+  border: 1px solid #badfbe;
+  color: #1f5c2d;
+}
+
+.send-message-error {
+  background: #fff1f1;
+  border: 1px solid #ebc2c2;
+  color: #842029;
+}
+
+.bot-trap {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+}
+
+#sendParcelForm .form-control:focus,
+#sendParcelForm .form-select:focus {
+  border-color: #8f78df;
+  box-shadow: 0 0 0 0.2rem rgba(91, 60, 196, 0.12);
+}
+
+.step-tracker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+}
+
+.step-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid #ced4da;
+  background: #fff;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.step-label {
+  font-size: 0.95rem;
+  color: #6c757d;
+  text-align: center;
+}
+
+.step-item.active .step-circle {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.step-item.active .step-label {
+  color: #212529;
+  font-weight: 600;
+}
+
+.step-line {
+  height: 2px;
+  width: 70px;
+  background: #dee2e6;
+}
+
+.section-block {
+  position: relative;
+  transition: opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.active-section {
+  opacity: 1;
+}
+
+.inactive-section {
+  opacity: 1;
+}
+
+.inactive-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(60, 60, 75, 0.18);
+  border-radius: 16px;
+  z-index: 2;
+}
+
+.inactive-section .form-control,
+.inactive-section .form-select,
+.inactive-section textarea,
+.inactive-section .form-check-input,
+.inactive-section .delivery-option-card {
+  pointer-events: none;
+}
+
+.delivery-option-list {
+  display: grid;
+  gap: 12px;
+}
+
+.delivery-option-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border: 1px solid #e5e7ef;
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  background: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.delivery-option-card:hover {
+  border-color: var(--primary);
+}
+
+.delivery-option-card:has(input:checked) {
+  border-color: var(--primary);
+  background: #f8f6ff;
+  box-shadow: 0 0 0 0.2rem rgba(91, 60, 196, 0.08);
+}
+
+.delivery-option-card input[type="radio"] {
+  margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+  .step-line {
+    width: 40px;
+  }
+
+  .step-item {
+    min-width: 90px;
+  }
+
+  .form-panel {
+    padding: 20px;
+  }
+}
+
+.section-block {
+  position: relative;
+  transition: opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.active-section {
+  opacity: 1;
+}
+
+.inactive-section {
+  opacity: 1;
+}
+
+.inactive-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(60, 60, 75, 0.18);
+  border-radius: 16px;
+  z-index: 2;
+}
+
+.inactive-section::before {
+  content: attr(data-lock-message);
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  background: rgba(255, 255, 255, 0.96);
+  color: #4b3a96;
+  border: 1px solid #ddd4fb;
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(91, 60, 196, 0.10);
+}
+
+.inactive-section .form-control,
+.inactive-section .form-select,
+.inactive-section textarea,
+.inactive-section .form-check-input,
+.inactive-section .delivery-option-card {
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .inactive-section::before {
+    max-width: calc(100% - 24px);
+    white-space: normal;
+    text-align: center;
+    line-height: 1.25;
+  }
+}
