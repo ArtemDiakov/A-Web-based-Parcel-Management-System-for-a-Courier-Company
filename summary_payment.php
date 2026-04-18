@@ -4,19 +4,22 @@ require_once __DIR__ . '/includes/csrf.php';
 
 $sendOrder = $_SESSION['send_order'] ?? null;
 
+$flashError = $_SESSION['send_order_error'] ?? '';
+unset($_SESSION['send_order_error']);
+
 if (!$sendOrder) {
-    header('Location: /send.php');
-    exit;
+  header('Location: /send.php');
+  exit;
 }
 
 function e($value): string
 {
-    return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+  return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
 }
 
 $deliveryLabel = ($sendOrder['delivery_type'] === 'collection')
-    ? 'Collection from my address'
-    : 'Drop-off at collection point';
+  ? 'Collection from my address'
+  : 'Drop-off at collection point';
 ?>
 
 <body>
@@ -26,6 +29,12 @@ $deliveryLabel = ($sendOrder['delivery_type'] === 'collection')
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-10">
+
+          <?php if ($flashError !== ''): ?>
+            <div class="send-message-error rounded-3 p-3 mb-4">
+              <?= htmlspecialchars($flashError, ENT_QUOTES, 'UTF-8') ?>
+            </div>
+          <?php endif; ?>
 
           <div class="step-tracker mb-4">
             <div class="step-item active">
@@ -168,12 +177,66 @@ $deliveryLabel = ($sendOrder['delivery_type'] === 'collection')
                 </div>
 
                 <form method="POST" action="/orders/complete_order.php">
+
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(generateCsrfToken(), ENT_QUOTES, 'UTF-8') ?>">
-                  <button type="submit" class="btn btn-primary w-100 btn-lg">Pay & Place Order</button>
+
+                  <div class="d-flex justify-content-between align-items-center mb-4">
+                    <strong>Total</strong>
+                    <strong class="fs-5">£<?= number_format($sendOrder['quote']['total'], 2) ?></strong>
+                  </div>
+
+                  <hr class="my-4">
+
+                  <h5 class="mb-3">Payment Option</h5>
+
+                  <div class="mb-3">
+                    <label class="form-label">Cardholder Name</label>
+                    <input type="text" class="form-control" id="card_name" placeholder="John Smith" required>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Card Number</label>
+                    <input type="text" class="form-control" id="card_number" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                  </div>
+
+                  <div class="row g-2 mb-3">
+                    <div class="col-md-6">
+                      <label class="form-label">Expiry Date</label>
+                      <input type="text" class="form-control" id="card_expiry" placeholder="MM/YY" maxlength="5" required>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label">CVV</label>
+                      <input type="password" class="form-control" id="card_cvv" placeholder="123" maxlength="4" required>
+                    </div>
+                  </div>
+
+                  <hr>
+
+                  <h6 class="mb-3">Conditions</h6>
+
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="termsCheck">
+                    <label class="form-check-label" for="termsCheck">
+                      I accept the terms and conditions
+                    </label>
+                  </div>
+
+                  <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="prohibitedCheck">
+                    <label class="form-check-label" for="prohibitedCheck">
+                      I confirm my shipment does not contain prohibited items
+                    </label>
+                  </div>
+
+                  <button type="submit" id="confirmOrderBtn" class="btn btn-primary w-100 btn-lg" disabled>
+                    Pay & Place Order
+                  </button>
+
                 </form>
 
                 <p class="text-muted small mt-3 mb-0">
-                  For now this button can go to your step 3 confirmation handler. Real payment gateway can be added later.
+              
                 </p>
               </div>
             </div>
@@ -184,6 +247,8 @@ $deliveryLabel = ($sendOrder['delivery_type'] === 'collection')
     </div>
   </section>
 
+  <script src="/js/summary_payment.js"></script>
   <?php require_once __DIR__ . '/includes/footer.php'; ?>
 </body>
+
 </html>
