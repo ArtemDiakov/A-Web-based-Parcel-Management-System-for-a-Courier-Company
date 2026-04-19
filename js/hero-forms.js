@@ -86,9 +86,11 @@ function setupHeroTrackForm() {
   const referenceField = form.querySelector('input[name="reference"]');
   if (!referenceField) return;
 
+  const referenceRegex = /^PP\d{8}[A-F0-9]{6}$/;
+
   referenceField.addEventListener("input", () => {
     let value = referenceField.value.toUpperCase();
-    value = value.replace(/[^A-Z0-9-]/g, "");
+    value = value.replace(/[^A-Z0-9]/g, "");
     referenceField.value = value;
 
     if (referenceField.value.trim() === "") {
@@ -100,6 +102,16 @@ function setupHeroTrackForm() {
 
   referenceField.addEventListener("blur", () => {
     referenceField.value = referenceField.value.trim().toUpperCase();
+    validateReferenceField(referenceField, referenceRegex, false);
+  });
+
+  form.addEventListener("submit", (event) => {
+    const valid = validateReferenceField(referenceField, referenceRegex, true);
+
+    if (!valid) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
   });
 }
 
@@ -139,7 +151,9 @@ function validateWeightField(field, requiredOnSubmit) {
 
   if (value === "") {
     if (requiredOnSubmit) {
-      field.setCustomValidity("Enter a valid weight between 0.1 and 999.99 kg.");
+      field.setCustomValidity(
+        "Enter a valid weight between 0.1 and 999.99 kg.",
+      );
       field.classList.add("is-invalid");
       field.classList.remove("is-valid");
       return false;
@@ -169,4 +183,35 @@ function validateWeightField(field, requiredOnSubmit) {
 
 function clearFieldState(field) {
   field.classList.remove("is-invalid", "is-valid");
+}
+
+function validateReferenceField(field, regex, requiredOnSubmit) {
+  const value = field.value.trim().toUpperCase();
+
+  if (value === "") {
+    if (requiredOnSubmit) {
+      field.setCustomValidity("Please enter a valid reference number.");
+      field.classList.add("is-invalid");
+      field.classList.remove("is-valid");
+      return false;
+    }
+
+    clearFieldState(field);
+    field.setCustomValidity("");
+    return true;
+  }
+
+  const isValid = regex.test(value);
+
+  if (!isValid) {
+    field.setCustomValidity("Please enter a valid reference number.");
+    field.classList.add("is-invalid");
+    field.classList.remove("is-valid");
+    return false;
+  }
+
+  field.setCustomValidity("");
+  field.classList.remove("is-invalid");
+  field.classList.add("is-valid");
+  return true;
 }

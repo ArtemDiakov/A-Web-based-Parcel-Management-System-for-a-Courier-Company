@@ -126,6 +126,8 @@ $collectionPrice = round($collectionCharge, 2);
 $referenceNumber = generateReferenceNumber($conn);
 $estimatedDeliveryDate = estimateDeliveryDate($deliveryType);
 
+$trackingUpdatedBy = isset($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : 13;
+
 pg_query($conn, 'BEGIN');
 
 $insertOrderSql = "
@@ -256,7 +258,7 @@ $trackingParams = [
     $orderId,
     $senderCity,
     'Order placed and payment confirmed.',
-    13
+    $trackingUpdatedBy
 ];
 
 $trackingResult = pg_query_params($conn, $insertTrackingSql, $trackingParams);

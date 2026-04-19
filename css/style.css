@@ -419,3 +419,138 @@ body {
   font-size: 0.95rem;
   box-shadow: 0 6px 18px rgba(122, 90, 0, 0.06);
 }
+
+.track-page .hero,
+.tracking-card {
+  position: relative;
+}
+
+.tracking-card {
+  background: #fff;
+  border: 1px solid #e9e6f8;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 12px 34px rgba(91, 60, 196, 0.08);
+}
+
+.tracking-reference-badge {
+  background: #f8f6ff;
+  border: 1px solid #ddd4fb;
+  border-radius: 16px;
+  padding: 14px 18px;
+}
+
+.tracking-reference-badge strong {
+  color: var(--primary);
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+}
+
+.tracking-progress {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.tracking-progress-item {
+  position: relative;
+  text-align: center;
+}
+
+.tracking-progress-item::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: calc(50% + 16px);
+  width: calc(100% - 8px);
+  height: 2px;
+  background: #dee2e6;
+}
+
+.tracking-progress-item:last-child::after {
+  display: none;
+}
+
+.tracking-progress-circle {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #ced4da;
+  margin: 0 auto 10px;
+}
+
+.tracking-progress-label {
+  font-size: 0.92rem;
+  color: #6c757d;
+  line-height: 1.3;
+}
+
+.tracking-progress-item.active .tracking-progress-circle {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.tracking-progress-item.active .tracking-progress-label {
+  color: #212529;
+  font-weight: 600;
+}
+
+.tracking-detail-box {
+  background: #fcfbff;
+  border: 1px solid #ece8fb;
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.tracking-detail-label {
+  display: block;
+  font-size: 0.86rem;
+  color: #6c757d;
+  margin-bottom: 8px;
+}
+
+.tracking-history-table thead th {
+  color: var(--primary);
+  font-weight: 700;
+  border-bottom-color: #e6e1fb;
+}
+
+.tracking-history-table tbody td {
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border-color: #f0ecfc;
+}
+
+.tracking-empty-state {
+  background: #f8f6ff;
+  border: 1px dashed #d7cef9;
+  border-radius: 16px;
+  padding: 18px;
+  color: #5c5a68;
+}
+
+@media (max-width: 991px) {
+  .tracking-progress {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .tracking-progress-item:nth-child(3)::after {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .tracking-card {
+    padding: 22px 18px;
+  }
+
+  .tracking-progress {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tracking-progress-item::after,
+  .tracking-progress-item:nth-child(3)::after {
+    display: none;
+  }
+}

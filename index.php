@@ -85,7 +85,10 @@
                     class="form-control"
                     name="reference"
                     placeholder="Reference number"
-                    maxlength="30" />
+                    maxlength="16"
+                    pattern="^PP\d{8}[A-F0-9]{6}$"
+                    aria-label="Reference number" />
+                  <div class="invalid-feedback">Please enter a valid reference number.</div>
                 </div>
 
                 <div class="col-md-auto">
