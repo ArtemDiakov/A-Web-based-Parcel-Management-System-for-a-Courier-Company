@@ -214,6 +214,12 @@ $prefillSenderName = $sendOrder['sender_name'] ?? $fullName;
                           <div class="invalid-feedback">Please enter a valid UK postcode.</div>
                         </div>
                         <div class="col-12">
+                          <div id="samePostcodeWarning" class="same-postcode-warning d-none">
+                            <i class="bi bi-exclamation-circle me-2"></i>
+                            Sender and recipient postcodes are the same. Please check this is intentional.
+                          </div>
+                        </div>
+                        <div class="col-12">
                           <label for="delivery_instructions" class="form-label">Delivery Instructions</label>
                           <textarea class="form-control recipient-input" id="delivery_instructions" name="delivery_instructions"
                             rows="4" maxlength="1000" placeholder="Optional notes for collection or delivery." disabled><?= oldValue($sendOrder, 'delivery_instructions') ?></textarea>

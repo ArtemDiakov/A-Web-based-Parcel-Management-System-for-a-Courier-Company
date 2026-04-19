@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const ukPostcodeRegex = /^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i;
   const ukMobileRegex = /^(?:\+44|0)7\d{9}$/;
 
+  const samePostcodeWarning = document.getElementById("samePostcodeWarning");
+
   let attemptedSubmit = false;
 
   function shouldShowValidation(field) {
@@ -104,6 +106,27 @@ document.addEventListener("DOMContentLoaded", () => {
     return valid;
   }
 
+  function updateSamePostcodeWarning() {
+    if (!samePostcodeWarning) return;
+
+    const senderValue = (form.sender_postcode?.value || "")
+      .toUpperCase()
+      .replace(/\s+/g, " ")
+      .trim();
+
+    const recipientValue = (form.recipient_postcode?.value || "")
+      .toUpperCase()
+      .replace(/\s+/g, " ")
+      .trim();
+
+    const showWarning =
+      senderValue !== "" &&
+      recipientValue !== "" &&
+      senderValue === recipientValue;
+
+    samePostcodeWarning.classList.toggle("d-none", !showWarning);
+  }
+
   function areFieldsValid(fields, forceVisual = false) {
     return fields.every((field) => validateField(field, forceVisual));
   }
@@ -160,6 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setSectionEnabled(deliverySection, deliveryInputs, parcelValid);
 
     const deliveryValid = parcelValid && validateDeliveryOptions(forceVisual);
+    updateSamePostcodeWarning();
     submitBtn.disabled = !deliveryValid;
   }
 
