@@ -31,38 +31,69 @@
             <!-- SEND TAB -->
 
             <div class="tab-pane fade show active" id="send">
-              <div class="row g-2">
+              <form action="/send.php" method="GET" class="row g-2" id="heroSendForm" novalidate>
                 <div class="col-md">
-                  <input class="form-control" placeholder="From postcode" />
+                  <input
+                    type="text"
+                    class="form-control postcode-input"
+                    name="from_postcode"
+                    placeholder="From postcode"
+                    maxlength="20"
+                    pattern="^[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}$"
+                    aria-label="From postcode" />
+                  <div class="invalid-feedback">Please enter a valid UK postcode.</div>
                 </div>
 
                 <div class="col-md">
-                  <input class="form-control" placeholder="To postcode" />
+                  <input
+                    type="text"
+                    class="form-control postcode-input"
+                    name="to_postcode"
+                    placeholder="To postcode"
+                    maxlength="20"
+                    pattern="^[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}$"
+                    aria-label="To postcode" />
+                  <div class="invalid-feedback">Please enter a valid UK postcode.</div>
                 </div>
 
                 <div class="col-md">
-                  <input class="form-control" placeholder="Parcel weight (kg)" />
+                  <input
+                    type="number"
+                    class="form-control"
+                    name="weight"
+                    placeholder="Parcel weight (kg)"
+                    min="0.1"
+                    max="999.99"
+                    step="0.01"
+                    aria-label="Parcel weight" />
+                  <div class="invalid-feedback">Enter a valid weight between 0.1 and 999.99 kg.</div>
                 </div>
 
                 <div class="col-md-auto">
-                  <button class="btn btn-primary">Get Quote</button>
+                  <button type="submit" class="btn btn-primary">Get Quote</button>
                 </div>
-              </div>
+              </form>
             </div>
 
             <!-- TRACK TAB -->
 
             <div class="tab-pane fade" id="track">
-              <div class="row g-2">
+              <form action="/track.php" method="GET" class="row g-2" id="heroTrackForm" novalidate>
                 <div class="col-md">
-                  <input class="form-control" placeholder="Reference number" />
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="reference"
+                    placeholder="Reference number"
+                    maxlength="30" />
                 </div>
 
                 <div class="col-md-auto">
-                  <button class="btn btn-primary">Track Parcel</button>
+                  <button type="submit" class="btn btn-primary">Track Parcel</button>
                 </div>
-              </div>
+              </form>
             </div>
+
           </div>
         </div>
       </div>

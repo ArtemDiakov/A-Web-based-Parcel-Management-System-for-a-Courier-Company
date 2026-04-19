@@ -2,12 +2,11 @@
 require_once __DIR__ . '/includes/header.php';
 require_once __DIR__ . '/includes/csrf.php';
 
-// Keep this only if the file really exists
 if (file_exists(__DIR__ . '/includes/order_security.php')) {
-    require_once __DIR__ . '/includes/order_security.php';
-    $formStartedAt = function_exists('sendFormStartedAt') ? sendFormStartedAt() : time();
+  require_once __DIR__ . '/includes/order_security.php';
+  $formStartedAt = function_exists('sendFormStartedAt') ? sendFormStartedAt() : time();
 } else {
-    $formStartedAt = time();
+  $formStartedAt = time();
 }
 
 $fullName = $_SESSION['full_name'] ?? '';
@@ -17,8 +16,37 @@ unset($_SESSION['send_order_error']);
 
 function oldValue(array $source, string $key, string $default = ''): string
 {
-    return htmlspecialchars((string)($source[$key] ?? $default), ENT_QUOTES, 'UTF-8');
+  return htmlspecialchars((string)($source[$key] ?? $default), ENT_QUOTES, 'UTF-8');
 }
+
+function cleanHeroPostcode(string $value): string
+{
+  $value = strtoupper(trim($value));
+  $value = preg_replace('/\s+/', ' ', $value);
+  return $value;
+}
+
+function cleanHeroNumber(string $value): string
+{
+  return trim($value);
+}
+
+function heroOrSessionValue(array $sessionData, string $sessionKey, string $getKey, string $default = ''): string
+{
+  if (!empty($sessionData[$sessionKey])) {
+    return htmlspecialchars((string)$sessionData[$sessionKey], ENT_QUOTES, 'UTF-8');
+  }
+
+  if (!empty($_GET[$getKey])) {
+    return htmlspecialchars((string)$_GET[$getKey], ENT_QUOTES, 'UTF-8');
+  }
+
+  return htmlspecialchars($default, ENT_QUOTES, 'UTF-8');
+}
+
+$heroFromPostcode = cleanHeroPostcode($_GET['from_postcode'] ?? '');
+$heroToPostcode = cleanHeroPostcode($_GET['to_postcode'] ?? '');
+$heroWeight = cleanHeroNumber($_GET['weight'] ?? '');
 
 $prefillContactEmail = $sendOrder['contact_email'] ?? '';
 $prefillContactPhone = $sendOrder['contact_phone'] ?? '';
@@ -135,7 +163,7 @@ $prefillSenderName = $sendOrder['sender_name'] ?? $fullName;
                         <div class="col-md-5">
                           <label for="sender_postcode" class="form-label">Postcode*</label>
                           <input type="text" class="form-control postcode-input sender-input" id="sender_postcode" name="sender_postcode"
-                            value="<?= oldValue($sendOrder, 'sender_postcode') ?>"
+                            value="<?= oldValue($sendOrder, 'sender_postcode', $heroFromPostcode) ?>"
                             required maxlength="20" disabled>
                           <div class="invalid-feedback">Please enter a valid UK postcode.</div>
                         </div>
@@ -181,7 +209,7 @@ $prefillSenderName = $sendOrder['sender_name'] ?? $fullName;
                         <div class="col-md-5">
                           <label for="recipient_postcode" class="form-label">Postcode*</label>
                           <input type="text" class="form-control postcode-input recipient-input" id="recipient_postcode" name="recipient_postcode"
-                            value="<?= oldValue($sendOrder, 'recipient_postcode') ?>"
+                            value="<?= oldValue($sendOrder, 'recipient_postcode', $heroToPostcode) ?>"
                             required maxlength="20" disabled>
                           <div class="invalid-feedback">Please enter a valid UK postcode.</div>
                         </div>
@@ -209,7 +237,7 @@ $prefillSenderName = $sendOrder['sender_name'] ?? $fullName;
                           <label for="weight" class="form-label">Weight (kg)*</label>
                           <input type="number" class="form-control parcel-input" id="weight" name="weight"
                             required min="0.1" max="999.99" step="0.01"
-                            value="<?= oldValue($sendOrder, 'weight') ?>" disabled>
+                            value="<?= oldValue($sendOrder, 'weight', $heroWeight) ?>" disabled>
                           <div class="invalid-feedback">Enter a valid weight.</div>
                         </div>
                         <div class="col-md-3">
@@ -300,4 +328,5 @@ $prefillSenderName = $sendOrder['sender_name'] ?? $fullName;
   <?php require_once __DIR__ . '/includes/footer.php'; ?>
   <script src="/js/send.js"></script>
 </body>
+
 </html>

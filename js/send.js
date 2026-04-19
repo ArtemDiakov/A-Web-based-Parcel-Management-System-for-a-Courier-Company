@@ -122,9 +122,9 @@ document.addEventListener("DOMContentLoaded", () => {
           form.sender_name,
           form.sender_postcode,
           form.sender_address1,
-          form.sender_city
+          form.sender_city,
         ],
-        forceVisual
+        forceVisual,
       );
 
     setSectionEnabled(recipientSection, recipientInputs, senderValid);
@@ -136,9 +136,9 @@ document.addEventListener("DOMContentLoaded", () => {
           form.recipient_name,
           form.recipient_postcode,
           form.recipient_address1,
-          form.recipient_city
+          form.recipient_city,
         ],
-        forceVisual
+        forceVisual,
       );
 
     setSectionEnabled(parcelSection, parcelInputs, recipientValid);
@@ -152,9 +152,9 @@ document.addEventListener("DOMContentLoaded", () => {
           form.width,
           form.height,
           form.quantity,
-          form.parcel_value
+          form.parcel_value,
         ],
-        forceVisual
+        forceVisual,
       );
 
     setSectionEnabled(deliverySection, deliveryInputs, parcelValid);
