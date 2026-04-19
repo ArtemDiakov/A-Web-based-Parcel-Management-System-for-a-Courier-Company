@@ -155,7 +155,10 @@ body {
 
 .section-block {
   position: relative;
-  transition: opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .active-section {
@@ -197,7 +200,10 @@ body {
   padding: 14px 16px;
   cursor: pointer;
   background: #fff;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .delivery-option-card:hover {
@@ -230,7 +236,10 @@ body {
 
 .section-block {
   position: relative;
-  transition: opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .active-section {
@@ -265,7 +274,7 @@ body {
   font-size: 0.9rem;
   font-weight: 600;
   white-space: nowrap;
-  box-shadow: 0 6px 18px rgba(91, 60, 196, 0.10);
+  box-shadow: 0 6px 18px rgba(91, 60, 196, 0.1);
 }
 
 .inactive-section .form-control,
@@ -399,4 +408,14 @@ body {
 .form-check-input:checked {
   background-color: var(--primary);
   border-color: var(--primary);
+}
+
+.same-postcode-warning {
+  background: #fff8e8;
+  border: 1px solid #f2dfaa;
+  color: #7a5a00;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  box-shadow: 0 6px 18px rgba(122, 90, 0, 0.06);
 }
