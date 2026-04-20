@@ -161,117 +161,12 @@ if ($currentStepIndex === false) {
                     </div>
 
                     <?php if ($order): ?>
-                        <div class="tracking-card mb-4">
-                            <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
-                                <div>
-                                    <h4 class="mb-1">Parcel details</h4>
-                                    <p class="text-muted mb-0">Latest tracking summary for this parcel.</p>
-                                </div>
-                                <div class="tracking-reference-badge">
-                                    <span class="d-block small text-muted mb-1">Order Reference Number</span>
-                                    <strong><?= e($order['reference_number']) ?></strong>
-                                </div>
-                            </div>
+                        <?php
+                        // Map variable names to what the include expects
+                        $trackingRows = $trackingHistory ?? [];
+                        ?>
 
-                            <div class="tracking-progress mb-4">
-                                <?php foreach ($statusSteps as $index => $step): ?>
-                                    <div class="tracking-progress-item <?= $index <= $currentStepIndex ? 'active' : '' ?>">
-                                        <div class="tracking-progress-circle"></div>
-                                        <div class="tracking-progress-label"><?= e(formatStatusLabel($step)) ?></div>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-
-                            <div class="row g-3 tracking-detail-grid">
-                                <div class="col-md-6">
-                                    <div class="tracking-detail-box">
-                                        <span class="tracking-detail-label">Current Status</span>
-                                        <strong><?= e(formatStatusLabel((string)$order['current_status'])) ?></strong>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="tracking-detail-box">
-                                        <span class="tracking-detail-label">Delivery Type</span>
-                                        <strong><?= e(formatDeliveryTypeLabel((string)$order['delivery_type'])) ?></strong>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="tracking-detail-box">
-                                        <span class="tracking-detail-label">Estimated Delivery Date</span>
-                                        <strong>
-                                            <?= !empty($order['estimated_delivery_date'])
-                                                ? e(date('d/m/Y', strtotime((string)$order['estimated_delivery_date'])))
-                                                : 'Not available' ?>
-                                        </strong>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="tracking-detail-box">
-                                        <span class="tracking-detail-label">Recipient Name</span>
-                                        <strong><?= e($order['recipient_name']) ?></strong>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="tracking-detail-box h-100">
-                                        <span class="tracking-detail-label">Delivery Address</span>
-                                        <strong><?= e(buildAddress($order, 'recipient')) ?></strong>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-6">
-                                    <div class="tracking-detail-box h-100">
-                                        <span class="tracking-detail-label">Parcel Weight</span>
-                                        <strong><?= e(number_format((float)$order['weight'], 2)) ?> kg</strong>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-6">
-                                    <div class="tracking-detail-box h-100">
-                                        <span class="tracking-detail-label">Total Paid</span>
-                                        <strong>£<?= e(number_format((float)($order['paid_amount'] ?? $order['total_price']), 2)) ?></strong>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tracking-card">
-                            <div class="mb-4">
-                                <h4 class="mb-1">Tracking history</h4>
-                                <p class="text-muted mb-0">Most recent updates for this parcel.</p>
-                            </div>
-
-                            <?php if (!empty($trackingHistory)): ?>
-                                <div class="table-responsive">
-                                    <table class="table tracking-history-table align-middle mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th>Date &amp; Time</th>
-                                                <th>Location</th>
-                                                <th>Description</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($trackingHistory as $entry): ?>
-                                                <tr>
-                                                    <td>
-                                                        <?= e(date('d/m/Y - H:i', strtotime((string)$entry['created_at']))) ?>
-                                                    </td>
-                                                    <td>
-                                                        <?= e($entry['location'] ?: '—') ?>
-                                                    </td>
-                                                    <td>
-                                                        <div class="fw-semibold mb-1"><?= e(formatStatusLabel((string)$entry['status'])) ?></div>
-                                                        <div class="text-muted small"><?= e($entry['description'] ?: 'Tracking update recorded.') ?></div>
-                                                    </td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            <?php else: ?>
-                                <div class="tracking-empty-state">
-                                    No tracking history is available for this parcel yet.
-                                </div>
-                            <?php endif; ?>
-                        </div>
+                        <?php require_once __DIR__ . '/includes/order_tracking_view.php'; ?>
                     <?php endif; ?>
 
                 </div>
