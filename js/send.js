@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const samePostcodeWarning = document.getElementById("samePostcodeWarning");
 
+  const operatingAreaWarning = document.getElementById("operatingAreaWarning");
+
   let attemptedSubmit = false;
 
   function shouldShowValidation(field) {
@@ -31,6 +33,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function clearValidationState(field) {
     field.classList.remove("is-invalid", "is-valid");
+  }
+
+  function normalisePostcode(value) {
+    return value.toUpperCase().replace(/\s+/g, "").trim();
+  }
+
+  const approvedAreaPostcodes = (window.approvedAreaPostcodes || []).map(
+    normalisePostcode,
+  );
+
+  function isApprovedOperatingPostcode(value) {
+    const normalised = normalisePostcode(value);
+    if (normalised === "") return false;
+    return approvedAreaPostcodes.includes(normalised);
+  }
+
+  function updateOperatingAreaWarning() {
+    if (!operatingAreaWarning) return true;
+
+    const senderRaw = form.sender_postcode?.value || "";
+    const recipientRaw = form.recipient_postcode?.value || "";
+
+    const senderFormatValid =
+      senderRaw.trim() !== "" && ukPostcodeRegex.test(senderRaw.trim());
+    const recipientFormatValid =
+      recipientRaw.trim() !== "" && ukPostcodeRegex.test(recipientRaw.trim());
+
+    if (!senderFormatValid || !recipientFormatValid) {
+      operatingAreaWarning.classList.add("d-none");
+      return true;
+    }
+
+    const senderApproved = isApprovedOperatingPostcode(senderRaw);
+    const recipientApproved = isApprovedOperatingPostcode(recipientRaw);
+    const areasOk = senderApproved && recipientApproved;
+
+    operatingAreaWarning.classList.toggle("d-none", areasOk);
+    return areasOk;
   }
 
   function setSectionEnabled(section, inputs, enabled) {
@@ -68,8 +108,17 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (field.classList.contains("postcode-input")) {
       if (value === "") {
         valid = false;
+        field.setCustomValidity("Please enter a valid UK postcode.");
       } else {
-        valid = ukPostcodeRegex.test(value);
+        const postcodeFormatValid = ukPostcodeRegex.test(value);
+
+        if (!postcodeFormatValid) {
+          valid = false;
+          field.setCustomValidity("Please enter a valid UK postcode.");
+        } else {
+          valid = true;
+          field.setCustomValidity("");
+        }
       }
     } else {
       valid = field.checkValidity();
@@ -109,15 +158,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateSamePostcodeWarning() {
     if (!samePostcodeWarning) return;
 
-    const senderValue = (form.sender_postcode?.value || "")
-      .toUpperCase()
-      .replace(/\s+/g, " ")
-      .trim();
-
-    const recipientValue = (form.recipient_postcode?.value || "")
-      .toUpperCase()
-      .replace(/\s+/g, " ")
-      .trim();
+    const senderValue = normalisePostcode(form.sender_postcode?.value || "");
+    const recipientValue = normalisePostcode(
+      form.recipient_postcode?.value || "",
+    );
 
     const showWarning =
       senderValue !== "" &&
@@ -183,8 +227,10 @@ document.addEventListener("DOMContentLoaded", () => {
     setSectionEnabled(deliverySection, deliveryInputs, parcelValid);
 
     const deliveryValid = parcelValid && validateDeliveryOptions(forceVisual);
+    const operatingAreasValid = updateOperatingAreaWarning();
+
     updateSamePostcodeWarning();
-    submitBtn.disabled = !deliveryValid;
+    submitBtn.disabled = !(deliveryValid && operatingAreasValid);
   }
 
   function normaliseFieldsBeforeSubmit() {

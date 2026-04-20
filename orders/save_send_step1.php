@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/csrf.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -35,6 +36,28 @@ function cleanPostcode(string $value): string
     $value = strtoupper(trim($value));
     $value = preg_replace('/\s+/', ' ', $value);
     return $value;
+}
+
+function normalisePostcode(string $postcode): string
+{
+    return strtoupper(preg_replace('/\s+/', '', trim($postcode)));
+}
+
+function isOperatingAreaApproved($conn, string $postcode): bool
+{
+    $normalised = normalisePostcode($postcode);
+
+    $result = pg_query_params(
+        $conn,
+        "SELECT 1
+         FROM public.operating_areas
+         WHERE REPLACE(UPPER(postcode), ' ', '') = $1
+           AND is_active = true
+         LIMIT 1",
+        [$normalised]
+    );
+
+    return $result && pg_num_rows($result) > 0;
 }
 
 function redirectWithError(string $message): void
@@ -99,6 +122,10 @@ if (!preg_match($ukPostcodeRegex, $senderPostcode)) {
     redirectWithError('Please enter a valid sender postcode.');
 }
 
+if (!isOperatingAreaApproved($conn, $senderPostcode)) {
+    redirectWithError('Sorry, we do not currently collect parcels from the selected sender postcode.');
+}
+
 if ($recipientName === '' || strlen($recipientName) > 100) {
     redirectWithError('Please enter the recipient name.');
 }
@@ -117,6 +144,10 @@ if ($recipientCity === '' || strlen($recipientCity) > 100) {
 
 if (!preg_match($ukPostcodeRegex, $recipientPostcode)) {
     redirectWithError('Please enter a valid recipient postcode.');
+}
+
+if (!isOperatingAreaApproved($conn, $recipientPostcode)) {
+    redirectWithError('Sorry, we do not currently deliver to the selected recipient postcode.');
 }
 
 if (strlen($deliveryInstructions) > 1000) {

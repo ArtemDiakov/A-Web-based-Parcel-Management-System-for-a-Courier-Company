@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/header.php';
 require_once __DIR__ . '/includes/csrf.php';
+require_once __DIR__ . '/includes/db.php';
 
 if (file_exists(__DIR__ . '/includes/order_security.php')) {
   require_once __DIR__ . '/includes/order_security.php';
@@ -314,6 +315,10 @@ $prefillSenderName = $sendOrder['sender_name'] ?? $fullName;
                         </label>
                       </div>
 
+                      <div id="operatingAreaWarning" class="send-message-error rounded-3 p-3 mb-3 d-none">
+                        One or both postcodes are outside our approved operating areas. Please use supported postcodes to continue.
+                      </div>
+
                       <div class="d-grid gap-2 mt-4">
                         <button type="submit" class="btn btn-primary btn-lg" id="submitOrderBtn" disabled>
                           Continue to Summary
@@ -330,6 +335,20 @@ $prefillSenderName = $sendOrder['sender_name'] ?? $fullName;
       </div>
     </div>
   </section>
+
+  <?php
+  $approvedAreaPostcodes = [];
+  $areaResult = pg_query($conn, "SELECT postcode FROM public.operating_areas WHERE is_active = true ORDER BY postcode");
+
+  if ($areaResult) {
+    while ($row = pg_fetch_assoc($areaResult)) {
+      $approvedAreaPostcodes[] = strtoupper(preg_replace('/\s+/', '', trim($row['postcode'])));
+    }
+  }
+  ?>
+  <script>
+    window.approvedAreaPostcodes = <?= json_encode(array_values(array_unique($approvedAreaPostcodes))) ?>;
+  </script>
 
   <?php require_once __DIR__ . '/includes/footer.php'; ?>
   <script src="/js/send.js"></script>

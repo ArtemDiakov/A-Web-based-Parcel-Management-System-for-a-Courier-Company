@@ -30,6 +30,28 @@ function redirectSummaryError(string $message): void
     exit;
 }
 
+function normalisePostcode(string $postcode): string
+{
+    return strtoupper(preg_replace('/\s+/', '', trim($postcode)));
+}
+
+function isOperatingAreaApproved($conn, string $postcode): bool
+{
+    $normalised = normalisePostcode($postcode);
+
+    $result = pg_query_params(
+        $conn,
+        "SELECT 1
+         FROM public.operating_areas
+         WHERE REPLACE(UPPER(postcode), ' ', '') = $1
+           AND is_active = true
+         LIMIT 1",
+        [$normalised]
+    );
+
+    return $result && pg_num_rows($result) > 0;
+}
+
 function generateReferenceNumber($conn): string
 {
     do {
@@ -111,6 +133,14 @@ if (
     !in_array($deliveryType, ['collection', 'dropoff'], true)
 ) {
     redirectSummaryError('Some required order details are missing. Please review your parcel details.');
+}
+
+if (!isOperatingAreaApproved($conn, $senderPostcode)) {
+    redirectSummaryError('The sender postcode is no longer in an approved operating area.');
+}
+
+if (!isOperatingAreaApproved($conn, $recipientPostcode)) {
+    redirectSummaryError('The recipient postcode is no longer in an approved operating area.');
 }
 
 $basePrice = (float)($quote['base_price'] ?? 0);
