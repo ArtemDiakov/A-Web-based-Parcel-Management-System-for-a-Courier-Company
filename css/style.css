@@ -603,3 +603,15 @@ body {
   box-shadow: 0 0 0 0.2rem rgba(91, 60, 196, 0.12);
   z-index: 3;
 }
+
+.staff-status-badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+@media (min-width: 1200px) {
+  .col-xl-2-4 {
+    flex: 0 0 auto;
+    width: 20%;
+  }
+}
