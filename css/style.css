@@ -554,3 +554,52 @@ body {
     display: none;
   }
 }
+
+.account-sidebar {
+  position: sticky;
+  top: 24px;
+}
+
+.account-nav .nav-link {
+  text-align: left;
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: #212529;
+  font-weight: 600;
+  border: 1px solid transparent;
+  margin-bottom: 10px;
+}
+
+.account-nav .nav-link:hover {
+  background: #f8f6ff;
+  border-color: #ddd4fb;
+  color: var(--primary);
+}
+
+.account-nav .nav-link.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.account-readonly:disabled,
+.form-control:disabled.account-readonly {
+  background-color: #f8f9fa;
+  opacity: 1;
+}
+
+#profileInfoForm .form-control:focus {
+  border-color: #8f78df;
+  box-shadow: 0 0 0 0.2rem rgba(91, 60, 196, 0.12);
+}
+
+.account-nav form .btn {
+  border-radius: 12px;
+}
+
+#securityForm .form-control:focus,
+#securityForm .input-group .form-control:focus {
+  border-color: #8f78df;
+  box-shadow: 0 0 0 0.2rem rgba(91, 60, 196, 0.12);
+  z-index: 3;
+}
