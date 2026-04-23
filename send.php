@@ -52,6 +52,45 @@ $heroWeight = cleanHeroNumber($_GET['weight'] ?? '');
 $prefillContactEmail = $sendOrder['contact_email'] ?? '';
 $prefillContactPhone = $sendOrder['contact_phone'] ?? '';
 $prefillSenderName = $sendOrder['sender_name'] ?? $fullName;
+
+$savedSenderData = null;
+
+if (isset($_SESSION['user_id'])) {
+  $savedSenderResult = pg_query_params(
+    $conn,
+    "SELECT
+        u.full_name,
+        ua.address_line1,
+        ua.address_line2,
+        ua.city,
+        ua.postcode
+     FROM public.users u
+     LEFT JOIN public.user_addresses ua
+       ON ua.user_id = u.id
+      AND ua.is_default = true
+     WHERE u.id = $1
+     LIMIT 1",
+    [(int) $_SESSION['user_id']]
+  );
+
+  $savedSenderRow = $savedSenderResult ? pg_fetch_assoc($savedSenderResult) : null;
+
+  if (
+    $savedSenderRow &&
+    !empty($savedSenderRow['full_name']) &&
+    !empty($savedSenderRow['address_line1']) &&
+    !empty($savedSenderRow['city']) &&
+    !empty($savedSenderRow['postcode'])
+  ) {
+    $savedSenderData = [
+      'full_name' => (string) $savedSenderRow['full_name'],
+      'address_line1' => (string) $savedSenderRow['address_line1'],
+      'address_line2' => (string) ($savedSenderRow['address_line2'] ?? ''),
+      'city' => (string) $savedSenderRow['city'],
+      'postcode' => (string) $savedSenderRow['postcode'],
+    ];
+  }
+}
 ?>
 
 <body>
@@ -132,6 +171,18 @@ $prefillSenderName = $sendOrder['sender_name'] ?? $fullName;
                         <h4 class="mb-1">Sender Details</h4>
                         <p class="text-muted mb-0">Where the parcel is coming from.</p>
                       </div>
+
+                      <?php if ($savedSenderData): ?>
+                        <div class="form-check mb-3">
+                          <input
+                            class="form-check-input sender-autofill-toggle"
+                            type="checkbox"
+                            id="useSavedSenderDetails">
+                          <label class="form-check-label" for="useSavedSenderDetails">
+                            Fill sender details from my account
+                          </label>
+                        </div>
+                      <?php endif; ?>
 
                       <div class="row g-3">
                         <div class="col-12">
@@ -352,6 +403,9 @@ $prefillSenderName = $sendOrder['sender_name'] ?? $fullName;
   ?>
   <script>
     window.approvedAreaPostcodes = <?= json_encode(array_values(array_unique($approvedAreaPostcodes))) ?>;
+  </script>
+  <script>
+    window.savedSenderDetails = <?= json_encode($savedSenderData ?? null) ?>;
   </script>
 
   <?php require_once __DIR__ . '/includes/footer.php'; ?>

@@ -11,6 +11,51 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  const savedSenderDetails = window.savedSenderDetails || null;
+  const useSavedSenderDetailsCheckbox = document.getElementById(
+    "useSavedSenderDetails",
+  );
+
+  function fillSenderDetailsFromAccount() {
+    if (!savedSenderDetails) return;
+
+    const senderName = document.getElementById("sender_name");
+    const senderAddress1 = document.getElementById("sender_address1");
+    const senderAddress2 = document.getElementById("sender_address2");
+    const senderCity = document.getElementById("sender_city");
+    const senderPostcode = document.getElementById("sender_postcode");
+
+    if (senderName) senderName.value = savedSenderDetails.full_name || "";
+    if (senderAddress1)
+      senderAddress1.value = savedSenderDetails.address_line1 || "";
+    if (senderAddress2)
+      senderAddress2.value = savedSenderDetails.address_line2 || "";
+    if (senderCity) senderCity.value = savedSenderDetails.city || "";
+    if (senderPostcode)
+      senderPostcode.value = savedSenderDetails.postcode || "";
+
+    [
+      senderName,
+      senderAddress1,
+      senderAddress2,
+      senderCity,
+      senderPostcode,
+    ].forEach((field) => {
+      if (field) {
+        field.dispatchEvent(new Event("input", { bubbles: true }));
+        field.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    });
+  }
+
+  if (useSavedSenderDetailsCheckbox) {
+    useSavedSenderDetailsCheckbox.addEventListener("change", function () {
+      if (this.checked) {
+        fillSenderDetailsFromAccount();
+      }
+    });
+  }
+
   if (!form) return;
 
   const submitBtn = document.getElementById("submitOrderBtn");
