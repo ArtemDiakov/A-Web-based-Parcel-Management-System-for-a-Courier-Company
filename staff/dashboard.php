@@ -58,8 +58,6 @@ $whereParts = [];
 $params = [];
 $paramIndex = 1;
 
-$whereParts[] = "o.current_status <> 'cancelled'::order_status_enum";
-
 if ($search !== '') {
     $params[] = '%' . $search . '%';
     $likeParam = '$' . $paramIndex++;
@@ -104,6 +102,9 @@ switch ($statusFilter) {
         $whereParts[] = "o.current_status = 'delivered'::order_status_enum";
         break;
 
+    case 'cancelled':
+        $whereParts[] = "o.current_status = 'cancelled'::order_status_enum";
+        break;
     case 'active':
     default:
         $whereParts[] = "o.current_status IN (
@@ -217,6 +218,7 @@ $orders = $orderResult ? (pg_fetch_all($orderResult) ?: []) : [];
                             <option value="out_for_delivery" <?= $statusFilter === 'out_for_delivery' ? 'selected' : '' ?>>Out for delivery</option>
                             <option value="exceptions" <?= $statusFilter === 'exceptions' ? 'selected' : '' ?>>Exceptions</option>
                             <option value="delivered" <?= $statusFilter === 'delivered' ? 'selected' : '' ?>>Delivered</option>
+                            <option value="cancelled" <?= $statusFilter === 'cancelled' ? 'selected' : '' ?>>Cancelled</option>
                         </select>
                     </div>
 

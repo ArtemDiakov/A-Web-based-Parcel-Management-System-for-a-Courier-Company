@@ -211,49 +211,57 @@ if (($_SESSION['role'] ?? '') === 'admin') {
                 </div>
 
                 <div class="col-lg-6">
+                    <?php $isAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin'; ?>
+
                     <div class="tracking-card mb-4">
                         <h5 class="mb-3">Update Parcel Progress</h5>
 
-                        <form method="POST" action="/staff/update_tracking.php" novalidate>
-                            <input type="hidden" name="csrf_token" value="<?= e(generateCsrfToken()) ?>">
-                            <input type="hidden" name="reference" value="<?= e($order['reference_number']) ?>">
-
-                            <div class="mb-3">
-                                <label for="status" class="form-label">New Status</label>
-                                <select class="form-select" id="status" name="status" required>
-                                    <?php foreach ($allowedStatuses as $status): ?>
-                                        <option value="<?= e($status) ?>" <?= $status === $order['current_status'] ? 'selected' : '' ?>>
-                                            <?= e(formatStatusLabel($status)) ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
+                        <?php if ($order['current_status'] === 'cancelled' && !$isAdmin): ?>
+                            <div class="send-message-error rounded-3 p-3 mb-0">
+                                This order has been cancelled and can only be changed by an admin.
                             </div>
+                        <?php else: ?>
+                            <form method="POST" action="/staff/update_tracking.php" novalidate>
+                                <input type="hidden" name="csrf_token" value="<?= e(generateCsrfToken()) ?>">
+                                <input type="hidden" name="reference" value="<?= e($order['reference_number']) ?>">
 
-                            <div class="mb-3">
-                                <label for="location" class="form-label">Location</label>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    id="location"
-                                    name="location"
-                                    maxlength="150"
-                                    placeholder="e.g. Aberystwyth Depot">
-                            </div>
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">New Status</label>
+                                    <select class="form-select" id="status" name="status" required>
+                                        <?php foreach ($allowedStatuses as $status): ?>
+                                            <option value="<?= e($status) ?>" <?= $status === $order['current_status'] ? 'selected' : '' ?>>
+                                                <?= e(formatStatusLabel($status)) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
 
-                            <div class="mb-3">
-                                <label for="description" class="form-label">Tracking Update</label>
-                                <textarea
-                                    class="form-control"
-                                    id="description"
-                                    name="description"
-                                    rows="4"
-                                    maxlength="1000"
-                                    placeholder="Describe what changed or what action was taken."></textarea>
-                                <div class="form-text">Required when keeping the same status.</div>
-                            </div>
+                                <div class="mb-3">
+                                    <label for="location" class="form-label">Location</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="location"
+                                        name="location"
+                                        maxlength="150"
+                                        placeholder="e.g. Aberystwyth Depot">
+                                </div>
 
-                            <button type="submit" class="btn btn-primary w-100">Save Update</button>
-                        </form>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Tracking Update</label>
+                                    <textarea
+                                        class="form-control"
+                                        id="description"
+                                        name="description"
+                                        rows="4"
+                                        maxlength="1000"
+                                        placeholder="Describe what changed or what action was taken."></textarea>
+                                    <div class="form-text">Required when keeping the same status.</div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100">Save Update</button>
+                            </form>
+                        <?php endif; ?>
                     </div>
 
                     <div class="tracking-card">

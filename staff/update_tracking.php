@@ -82,6 +82,14 @@ if (!$order) {
     exit;
 }
 
+$isAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+
+if ($order['current_status'] === 'cancelled' && !$isAdmin) {
+    $_SESSION['staff_error'] = 'Cancelled orders can only be changed by an admin.';
+    header('Location: /staff/order_view.php?reference=' . urlencode($reference));
+    exit;
+}
+
 if ($status === $order['current_status'] && $description === '') {
     $_SESSION['staff_error'] = 'Add a tracking update note when keeping the same status.';
     header('Location: /staff/order_view.php?reference=' . urlencode($reference));
