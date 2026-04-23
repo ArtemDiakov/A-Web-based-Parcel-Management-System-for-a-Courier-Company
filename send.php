@@ -138,8 +138,10 @@ $prefillSenderName = $sendOrder['sender_name'] ?? $fullName;
                           <label for="sender_name" class="form-label">Sender Name*</label>
                           <input type="text" class="form-control sender-input" id="sender_name" name="sender_name"
                             value="<?= oldValue($sendOrder, 'sender_name', $prefillSenderName) ?>"
-                            required maxlength="100" disabled>
-                          <div class="invalid-feedback">Please enter the sender name.</div>
+                            required maxlength="100"
+                            pattern="(?=.{2,100}$)(?=.*[A-Za-zÀ-ÿ])[A-Za-zÀ-ÿ .'-]+"
+                            disabled>
+                          <div class="invalid-feedback">Please enter a valid sender name.</div>
                         </div>
                         <div class="col-12">
                           <label for="sender_address1" class="form-label">Address Line 1*</label>
@@ -184,8 +186,10 @@ $prefillSenderName = $sendOrder['sender_name'] ?? $fullName;
                           <label for="recipient_name" class="form-label">Recipient Name*</label>
                           <input type="text" class="form-control recipient-input" id="recipient_name" name="recipient_name"
                             value="<?= oldValue($sendOrder, 'recipient_name') ?>"
-                            required maxlength="100" disabled>
-                          <div class="invalid-feedback">Please enter the recipient name.</div>
+                            required maxlength="100"
+                            pattern="(?=.{2,100}$)(?=.*[A-Za-zÀ-ÿ])[A-Za-zÀ-ÿ .'-]+"
+                            disabled>
+                          <div class="invalid-feedback">Please enter a valid recipient name.</div>
                         </div>
                         <div class="col-12">
                           <label for="recipient_address1" class="form-label">Address Line 1*</label>

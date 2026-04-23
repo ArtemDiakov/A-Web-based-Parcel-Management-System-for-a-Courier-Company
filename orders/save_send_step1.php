@@ -93,6 +93,7 @@ $deliveryType = $_POST['delivery_type'] ?? '';
 
 $ukPostcodeRegex = '/^[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}$/';
 $ukMobileRegex = '/^(?:\+44|0)7\d{9}$/';
+$nameRegex = "/^(?=.{2,100}$)(?=.*[A-Za-zÀ-ÿ])[A-Za-zÀ-ÿ .'-]+$/";
 
 if ($contactEmail !== '' && (!filter_var($contactEmail, FILTER_VALIDATE_EMAIL) || strlen($contactEmail) > 150)) {
     redirectWithError('Please enter a valid contact email address.');
@@ -104,6 +105,16 @@ if (!preg_match($ukMobileRegex, $contactPhone)) {
 
 if ($senderName === '' || strlen($senderName) > 100) {
     redirectWithError('Please enter the sender name.');
+}
+
+// Must contain at least one letter
+if (!preg_match('/[A-Za-zÀ-ÿ]/', $senderName)) {
+    redirectWithError('Please enter a valid sender name.');
+}
+
+// Must not contain numbers
+if (preg_match('/\d/', $senderName)) {
+    redirectWithError('Sender name cannot contain numbers.');
 }
 
 if ($senderAddress1 === '' || strlen($senderAddress1) > 150) {
@@ -128,6 +139,14 @@ if (!isOperatingAreaApproved($conn, $senderPostcode)) {
 
 if ($recipientName === '' || strlen($recipientName) > 100) {
     redirectWithError('Please enter the recipient name.');
+}
+
+if (!preg_match('/[A-Za-zÀ-ÿ]/', $recipientName)) {
+    redirectWithError('Please enter a valid recipient name.');
+}
+
+if (preg_match('/\d/', $recipientName)) {
+    redirectWithError('Recipient name cannot contain numbers.');
 }
 
 if ($recipientAddress1 === '' || strlen($recipientAddress1) > 150) {

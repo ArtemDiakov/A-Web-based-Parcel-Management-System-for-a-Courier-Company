@@ -1,5 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("sendParcelForm");
+
+  // Trim name fields on blur (fix trailing space validation issue)
+  ["sender_name", "recipient_name"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("blur", function () {
+        this.value = this.value.trim();
+      });
+    }
+  });
+
   if (!form) return;
 
   const submitBtn = document.getElementById("submitOrderBtn");
