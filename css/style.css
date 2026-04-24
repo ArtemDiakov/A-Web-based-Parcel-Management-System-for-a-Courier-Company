@@ -615,3 +615,32 @@ body {
     width: 20%;
   }
 }
+
+/* Admin dashboard additions */
+.admin-list-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #f0ecfc;
+}
+
+.admin-list-row:last-child {
+  border-bottom: none;
+}
+
+.admin-edit-box {
+  background: #fcfbff;
+  border: 1px solid #ece8fb;
+  border-radius: 16px;
+  padding: 20px;
+  margin: 0 0 18px;
+}
+
+@media (max-width: 768px) {
+  .admin-list-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
