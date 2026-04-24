@@ -99,7 +99,9 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (field.name === "is_active") {
       valid = ["0", "1"].includes(value);
     } else if (field.name === "expires_at") {
-      valid = value === "" || field.checkValidity();
+      valid = field.required
+        ? field.checkValidity()
+        : value === "" || field.checkValidity();
     } else if (field.required) {
       valid = field.checkValidity();
     } else {

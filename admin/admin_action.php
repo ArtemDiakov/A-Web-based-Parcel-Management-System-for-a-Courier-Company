@@ -82,6 +82,21 @@ function normalisePostcode(string $postcode): string
     return strtoupper(preg_replace('/\s+/', '', trim($postcode)));
 }
 
+function parseAnnouncementExpiry(string $expiresAt): ?string
+{
+    if ($expiresAt === '') {
+        return null;
+    }
+
+    $timestamp = strtotime($expiresAt);
+
+    if ($timestamp === false) {
+        return false;
+    }
+
+    return date('Y-m-d H:i:s', $timestamp);
+}
+
 function validateUserFields(string $name, string $email, string $phone): ?string
 {
     if ($name === '' || strlen($name) > 100 || !preg_match('/[A-Za-zÀ-ÿ]/', $name) || preg_match('/\d/', $name)) {
@@ -119,6 +134,11 @@ $action = (string)($_POST['action'] ?? '');
 switch ($action) {
     case 'update_user': {
             $id = (int)($_POST['id'] ?? 0);
+
+            if ($id === 13) {
+                redirectAdmin('users', 'This is a protected system account and cannot be modified.', false);
+            }
+
             $name = cleanText($_POST['full_name'] ?? '');
             $email = cleanEmail($_POST['email'] ?? '');
             $phone = cleanPhone($_POST['phone'] ?? '');
@@ -160,6 +180,11 @@ switch ($action) {
 
     case 'update_staff': {
             $id = (int)($_POST['id'] ?? 0);
+
+            if ($id === 13) {
+                redirectAdmin('staff', 'This is a protected system account and cannot be modified.', false);
+            }
+
             $name = cleanText($_POST['full_name'] ?? '');
             $email = cleanEmail($_POST['email'] ?? '');
             $phone = cleanPhone($_POST['phone'] ?? '');
@@ -303,6 +328,11 @@ switch ($action) {
             $title = cleanText($_POST['title'] ?? '');
             $message = cleanText($_POST['message'] ?? '');
             $expiresAt = cleanText($_POST['expires_at'] ?? '');
+
+            if ($expiresAt === '') {
+                redirectAdmin('announcements', 'Please enter an expiry date for the announcement.', false);
+            }
+
             $isActive = isset($_POST['is_active']);
             $createdBy = (int)($_SESSION['user_id'] ?? 0);
 
@@ -310,11 +340,15 @@ switch ($action) {
                 redirectAdmin('announcements', 'Please enter a valid announcement title.', false);
             }
 
-            if ($message === '') {
-                redirectAdmin('announcements', 'Please enter an announcement message.', false);
+            if ($message === '' || strlen($message) > 1000) {
+                redirectAdmin('announcements', 'Announcement message must be between 1 and 1000 characters.', false);
             }
 
-            $expiresValue = $expiresAt !== '' ? date('Y-m-d H:i:s', strtotime($expiresAt)) : null;
+            $expiresValue = parseAnnouncementExpiry($expiresAt);
+
+            if ($expiresValue === false) {
+                redirectAdmin('announcements', 'Please enter a valid expiry date.', false);
+            }
 
             $result = pg_query_params(
                 $conn,
@@ -354,11 +388,15 @@ switch ($action) {
                 redirectAdmin('announcements', 'Please enter a valid announcement title.', false);
             }
 
-            if ($message === '') {
-                redirectAdmin('announcements', 'Please enter an announcement message.', false);
+            if ($message === '' || strlen($message) > 1000) {
+                redirectAdmin('announcements', 'Announcement message must be between 1 and 1000 characters.', false);
             }
 
-            $expiresValue = $expiresAt !== '' ? date('Y-m-d H:i:s', strtotime($expiresAt)) : null;
+            $expiresValue = parseAnnouncementExpiry($expiresAt);
+
+            if ($expiresValue === false) {
+                redirectAdmin('announcements', 'Please enter a valid expiry date.', false);
+            }
 
             $result = pg_query_params(
                 $conn,

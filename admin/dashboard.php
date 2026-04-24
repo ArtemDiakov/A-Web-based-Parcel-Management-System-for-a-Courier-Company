@@ -297,7 +297,11 @@ $announcements = $announcementResult ? (pg_fetch_all($announcementResult) ?: [])
                                             <div class="text-md-center">
                                                 <span class="badge text-bg-light staff-status-badge"><?= e(ucfirst($row['role'])) ?> · <?= e(statusLabel($row['is_active'])) ?></span>
                                             </div>
-                                            <a class="btn btn-outline-primary btn-sm" href="/admin/dashboard.php?tab=staff&staff_q=<?= urlencode($staffSearch) ?>&staff_id=<?= (int)$row['id'] ?>">View</a>
+                                            <?php if ((int)$row['id'] === 13): ?>
+                                                <span class="badge text-bg-secondary">System account</span>
+                                            <?php else: ?>
+                                                <a class="btn btn-outline-primary btn-sm" href="/admin/dashboard.php?tab=staff&staff_q=<?= urlencode($staffSearch) ?>&staff_id=<?= (int)$row['id'] ?>">View</a>
+                                            <?php endif; ?>
                                         </div>
 
                                         <?php if ($selectedStaffId === (int)$row['id']): ?>
@@ -459,15 +463,16 @@ $announcements = $announcementResult ? (pg_fetch_all($announcementResult) ?: [])
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label">Message</label>
-                                            <textarea class="form-control" name="message" rows="4" required></textarea>
+                                            <textarea class="form-control" name="message" rows="4" maxlength="1000" required></textarea>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Expires At</label>
-                                            <input class="form-control" type="datetime-local" name="expires_at">
+                                            <input class="form-control" type="datetime-local" name="expires_at" required>
+                                            <div class="invalid-feedback">Please enter an expiry date.</div>
                                         </div>
                                         <div class="col-md-6 d-flex align-items-end">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="new_ann_active" name="is_active" value="1" checked>
+                                                <input class="form-check-input" type="checkbox" id="new_ann_active" name="is_active" value="1" a>
                                                 <label class="form-check-label" for="new_ann_active">Active</label>
                                             </div>
                                         </div>
@@ -517,11 +522,12 @@ $announcements = $announcementResult ? (pg_fetch_all($announcementResult) ?: [])
                                                         </div>
                                                         <div class="col-12">
                                                             <label class="form-label">Message</label>
-                                                            <textarea class="form-control" name="message" rows="4" required><?= e($row['message']) ?></textarea>
+                                                            <textarea class="form-control" name="message" rows="4" maxlength="1000" required><?= e($row['message']) ?></textarea>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <label class="form-label">Expires At</label>
-                                                            <input class="form-control" type="datetime-local" name="expires_at" value="<?= !empty($row['expires_at']) ? e(date('Y-m-d\TH:i', strtotime($row['expires_at']))) : '' ?>">
+                                                            <input class="form-control" type="datetime-local" name="expires_at" value="<?= !empty($row['expires_at']) ? e(date('Y-m-d\TH:i', strtotime($row['expires_at']))) : '' ?>" required>
+                                                            <div class="invalid-feedback">Please enter an expiry date.</div>
                                                         </div>
                                                         <div class="col-md-6 d-flex align-items-end">
                                                             <div class="form-check">
