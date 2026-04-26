@@ -82,7 +82,7 @@ function normalisePostcode(string $postcode): string
     return strtoupper(preg_replace('/\s+/', '', trim($postcode)));
 }
 
-function parseAnnouncementExpiry(string $expiresAt): ?string
+function parseAnnouncementExpiry(string $expiresAt)
 {
     if ($expiresAt === '') {
         return null;

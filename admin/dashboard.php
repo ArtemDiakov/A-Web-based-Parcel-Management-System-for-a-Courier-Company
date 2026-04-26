@@ -244,10 +244,12 @@ $announcements = $announcementResult ? (pg_fetch_all($announcementResult) ?: [])
                                                         <div class="col-12">
                                                             <label class="form-label">Name</label>
                                                             <input class="form-control" name="full_name" maxlength="100" required value="<?= e($row['full_name']) ?>">
+                                                            <div class="invalid-feedback">Please enter a valid name.</div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <label class="form-label">Phone Number</label>
                                                             <input class="form-control" name="phone" maxlength="20" pattern="^(?:\+44|0)7\d{9}$" value="<?= e($row['phone']) ?>">
+                                                            <div class="invalid-feedback">Enter a valid UK mobile number, or leave it blank.</div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <label class="form-label">Email</label>
@@ -342,6 +344,7 @@ $announcements = $announcementResult ? (pg_fetch_all($announcementResult) ?: [])
                                                         <div class="col-12">
                                                             <label class="form-label">Email</label>
                                                             <input class="form-control" name="email" type="email" maxlength="150" required value="<?= e($row['email']) ?>">
+                                                            <div class="invalid-feedback">Please enter a valid email address.</div>
                                                         </div>
                                                     </div>
 
@@ -464,6 +467,7 @@ $announcements = $announcementResult ? (pg_fetch_all($announcementResult) ?: [])
                                         <div class="col-12">
                                             <label class="form-label">Message</label>
                                             <textarea class="form-control" name="message" rows="4" maxlength="1000" required></textarea>
+                                            <div class="invalid-feedback">Please enter an announcement message under 1000 characters.</div>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Expires At</label>
@@ -523,6 +527,7 @@ $announcements = $announcementResult ? (pg_fetch_all($announcementResult) ?: [])
                                                         <div class="col-12">
                                                             <label class="form-label">Message</label>
                                                             <textarea class="form-control" name="message" rows="4" maxlength="1000" required><?= e($row['message']) ?></textarea>
+                                                            <div class="invalid-feedback">Please enter an announcement message under 1000 characters.</div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <label class="form-label">Expires At</label>

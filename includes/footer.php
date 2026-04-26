@@ -24,6 +24,11 @@
     </div>
 
   </div>
+  <?php if (!isset($_SESSION['user_id']) && !defined('LOGIN_MODAL_INCLUDED')): ?>
+    <?php define('LOGIN_MODAL_INCLUDED', true); ?>
+    <?php require_once __DIR__ . '/login_modal.php'; ?>
+  <?php endif; ?>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/js/main.js"></script>
   <script src="/js/auth.js"></script>

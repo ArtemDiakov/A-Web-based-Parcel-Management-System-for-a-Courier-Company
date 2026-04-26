@@ -170,9 +170,6 @@
     </div>
   </section>
 
-  <!-- LOGIN MODAL -->
-  <?php include 'includes/login_modal.php'; ?>
-
   <!-- FOOTER -->
   <?php include 'includes/footer.php'; ?>
 
