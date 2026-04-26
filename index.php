@@ -1,4 +1,19 @@
-<?php include 'includes/header.php'; ?>
+<?php
+include 'includes/header.php';
+require_once __DIR__ . '/includes/db.php';
+
+$announcementResult = pg_query(
+  $conn,
+  "SELECT title, message
+   FROM public.announcements
+   WHERE is_active = true
+     AND (expires_at IS NULL OR expires_at >= NOW())
+   ORDER BY created_at DESC
+   LIMIT 3"
+);
+
+$homepageAnnouncements = $announcementResult ? (pg_fetch_all($announcementResult) ?: []) : [];
+?>
 
 <body>
   <!-- NAVBAR -->
@@ -105,13 +120,18 @@
 
   <!-- PROMO BANNER -->
 
-  <div class="container mt-4">
-    <div class="alert alert-info alert-dismissible fade show">
-      <strong>Limited Time Offer:</strong> 10% off parcels under 2kg
+  <?php if (!empty($homepageAnnouncements)): ?>
+    <div class="container mt-4">
+      <?php foreach ($homepageAnnouncements as $announcement): ?>
+        <div class="alert alert-info alert-dismissible fade show">
+          <strong><?= htmlspecialchars($announcement['title'], ENT_QUOTES, 'UTF-8') ?>:</strong>
+          <?= htmlspecialchars($announcement['message'], ENT_QUOTES, 'UTF-8') ?>
 
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      <?php endforeach; ?>
     </div>
-  </div>
+  <?php endif; ?>
 
   <!-- FEATURE 1 -->
 
