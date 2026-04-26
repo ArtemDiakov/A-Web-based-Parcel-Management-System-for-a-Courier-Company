@@ -176,7 +176,7 @@ $deliveryLabel = ($sendOrder['delivery_type'] === 'collection')
                   <strong class="fs-5">£<?= number_format($sendOrder['quote']['total'], 2) ?></strong>
                 </div>
 
-                <form method="POST" action="/orders/complete_order.php">
+                <form method="POST" action="/orders/create_checkout_session.php">
 
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(generateCsrfToken(), ENT_QUOTES, 'UTF-8') ?>">
 
@@ -187,29 +187,12 @@ $deliveryLabel = ($sendOrder['delivery_type'] === 'collection')
 
                   <hr class="my-4">
 
-                  <h5 class="mb-3">Payment Option</h5>
+                  <h5 class="mb-3">Payment</h5>
 
-                  <div class="mb-3">
-                    <label class="form-label">Cardholder Name</label>
-                    <input type="text" class="form-control" id="card_name" placeholder="John Smith" required>
-                  </div>
-
-                  <div class="mb-3">
-                    <label class="form-label">Card Number</label>
-                    <input type="text" class="form-control" id="card_number" placeholder="1234 5678 9012 3456" maxlength="19" required>
-                  </div>
-
-                  <div class="row g-2 mb-3">
-                    <div class="col-md-6">
-                      <label class="form-label">Expiry Date</label>
-                      <input type="text" class="form-control" id="card_expiry" placeholder="MM/YY" maxlength="5" required>
-                    </div>
-
-                    <div class="col-md-6">
-                      <label class="form-label">CVV</label>
-                      <input type="password" class="form-control" id="card_cvv" placeholder="123" maxlength="4" required>
-                    </div>
-                  </div>
+                  <p class="text-muted small">
+                    You will be redirected to Stripe Checkout to complete a secure test payment.
+                    Card details are entered on Stripe, not stored by ParcelPro.
+                  </p>
 
                   <hr>
 
@@ -230,13 +213,13 @@ $deliveryLabel = ($sendOrder['delivery_type'] === 'collection')
                   </div>
 
                   <button type="submit" id="confirmOrderBtn" class="btn btn-primary w-100 btn-lg" disabled>
-                    Pay & Place Order
+                    Pay securely with Stripe
                   </button>
 
                 </form>
 
                 <p class="text-muted small mt-3 mb-0">
-              
+
                 </p>
               </div>
             </div>

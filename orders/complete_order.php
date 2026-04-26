@@ -4,13 +4,48 @@ session_start();
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/csrf.php';
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /send.php');
+$stripeSecretKey = 'sk_test_REDACTED';
+
+$stripeSessionId = $_GET['stripe_session_id'] ?? '';
+
+if ($stripeSessionId === '') {
+    $_SESSION['send_order_error'] = 'Payment was not completed.';
+    header('Location: /summary_payment.php');
     exit;
 }
 
-if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) {
-    $_SESSION['send_order_error'] = 'Invalid request.';
+if (
+    empty($_SESSION['stripe_checkout_session_id']) ||
+    !hash_equals($_SESSION['stripe_checkout_session_id'], $stripeSessionId)
+) {
+    $_SESSION['send_order_error'] = 'Payment session did not match this order.';
+    header('Location: /summary_payment.php');
+    exit;
+}
+
+$ch = curl_init('https://api.stripe.com/v1/checkout/sessions/' . urlencode($stripeSessionId));
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_HTTPHEADER => [
+        'Authorization: Bearer ' . $stripeSecretKey,
+    ],
+]);
+
+$response = curl_exec($ch);
+$curlError = curl_error($ch);
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+$stripeSession = json_decode((string)$response, true);
+
+if ($response === false || $curlError !== '' || $httpCode < 200 || $httpCode >= 300) {
+    $_SESSION['send_order_error'] = 'Could not verify Stripe payment.';
+    header('Location: /summary_payment.php');
+    exit;
+}
+
+if (($stripeSession['payment_status'] ?? '') !== 'paid') {
+    $_SESSION['send_order_error'] = 'Stripe payment was not marked as paid.';
     header('Location: /summary_payment.php');
     exit;
 }
@@ -156,7 +191,30 @@ $collectionPrice = round($collectionCharge, 2);
 $referenceNumber = generateReferenceNumber($conn);
 $estimatedDeliveryDate = estimateDeliveryDate($deliveryType);
 
-$trackingUpdatedBy = isset($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : 13;
+function getSystemUserId($conn): int
+{
+    $result = pg_query_params(
+        $conn,
+        "SELECT id FROM public.users WHERE email = $1 AND role = 'admin' LIMIT 1",
+        ['system@parcelpro.local']
+    );
+
+    $row = $result ? pg_fetch_assoc($result) : false;
+
+    if (!$row) {
+        throw new RuntimeException('System account missing.');
+    }
+
+    return (int)$row['id'];
+}
+
+try {
+    $trackingUpdatedBy = isset($_SESSION['user_id'])
+        ? (int)$_SESSION['user_id']
+        : getSystemUserId($conn);
+} catch (RuntimeException $e) {
+    redirectSummaryError('System account is missing. Please contact support.');
+}
 
 pg_query($conn, 'BEGIN');
 
@@ -246,7 +304,7 @@ if (!$orderResult) {
 $orderRow = pg_fetch_assoc($orderResult);
 $orderId = (int)$orderRow['id'];
 
-$transactionReference = 'DEMO-' . strtoupper(bin2hex(random_bytes(4)));
+$transactionReference = $stripeSession['payment_intent'] ?? $stripeSessionId;
 
 $insertPaymentSql = "
     INSERT INTO public.payments (
@@ -261,7 +319,7 @@ $insertPaymentSql = "
 
 $paymentParams = [
     $orderId,
-    'card_demo',
+    'stripe_checkout',
     $totalPrice,
     $transactionReference
 ];
@@ -312,6 +370,7 @@ $_SESSION['last_order'] = [
 ];
 
 unset($_SESSION['send_order']);
+unset($_SESSION['stripe_checkout_session_id']);
 
 header('Location: /confirmation.php');
 exit;
