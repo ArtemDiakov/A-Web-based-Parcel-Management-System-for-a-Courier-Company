@@ -644,3 +644,15 @@ body {
     gap: 10px;
   }
 }
+
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #222;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  z-index: 9999;
+}

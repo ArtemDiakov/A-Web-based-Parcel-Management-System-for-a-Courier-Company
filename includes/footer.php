@@ -29,6 +29,25 @@
     <?php require_once __DIR__ . '/login_modal.php'; ?>
   <?php endif; ?>
 
+  <!-- COOKIE BANNER -->
+  <div id="cookieBanner" class="cookie-banner" style="display:none;">
+    <p class="mb-2">
+      <strong>Cookies</strong><br>
+      We use essential cookies for login/session security and optional cookies to improve your experience.
+    </p>
+
+    <div class="d-flex gap-2 justify-content-center flex-wrap">
+      <button id="rejectCookies" type="button" class="btn btn-sm btn-outline-light">
+        Reject Optional
+      </button>
+
+      <button id="acceptCookies" type="button" class="btn btn-sm btn-primary">
+        Accept All
+      </button>
+    </div>
+  </div>
+
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/js/main.js"></script>
   <script src="/js/auth.js"></script>

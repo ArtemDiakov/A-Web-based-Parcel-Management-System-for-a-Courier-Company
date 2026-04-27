@@ -193,23 +193,6 @@ $homepageAnnouncements = $announcementResult ? (pg_fetch_all($announcementResult
   <!-- FOOTER -->
   <?php include 'includes/footer.php'; ?>
 
-  <!-- COOKIE BOX -->
-  <div class="cookie-box">
-    <p class="mb-2">
-      <strong>Cookies</strong><br />
-      We use cookies to improve your experience.
-    </p>
-
-    <div class="d-flex gap-2 flex-wrap">
-      <button class="btn btn-sm btn-outline-secondary">
-        Cookie Settings
-      </button>
-
-      <button class="btn btn-sm btn-outline-secondary">Reject All</button>
-
-      <button class="btn btn-sm btn-primary">Accept All</button>
-    </div>
-  </div>
 </body>
 
 </html>
