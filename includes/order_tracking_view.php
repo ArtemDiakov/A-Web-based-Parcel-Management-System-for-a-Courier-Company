@@ -128,6 +128,10 @@ $exceptionStatuses = [
                     <th>Date & Time</th>
                     <th>Location</th>
                     <th>Description</th>
+
+                    <?php if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['staff', 'admin'], true)): ?>
+                        <th>Updated By</th>
+                    <?php endif; ?>
                 </tr>
             </thead>
             <tbody>
@@ -136,6 +140,10 @@ $exceptionStatuses = [
                         <td><?= date('d/m/Y H:i', strtotime((string)$row['created_at'])) ?></td>
                         <td><?= htmlspecialchars((string)($row['location'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
                         <td><?= htmlspecialchars((string)($row['description'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+
+                        <?php if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['staff', 'admin'], true)): ?>
+                            <td><?= htmlspecialchars((string)($row['updated_by_name'] ?? 'System'), ENT_QUOTES, 'UTF-8') ?></td>
+                        <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
