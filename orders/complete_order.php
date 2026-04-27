@@ -3,6 +3,7 @@ session_start();
 
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/csrf.php';
+require_once __DIR__ . '/../includes/sms.php';
 
 $stripeSecretKey = 'sk_test_REDACTED';
 
@@ -356,6 +357,11 @@ if (!$trackingResult) {
     redirectSummaryError('Order was created but tracking history failed. Please try again.');
 }
 
+$smsMessage = "ParcelPro: Order {$referenceNumber} has been placed and paid. Estimated delivery: "
+    . date('d M Y', strtotime($estimatedDeliveryDate)) . ".";
+
+$smsSent = sendParcelSms($conn, $orderId, $contactPhone, $smsMessage);
+
 pg_query($conn, 'COMMIT');
 
 $_SESSION['last_order'] = [
@@ -366,7 +372,8 @@ $_SESSION['last_order'] = [
     'contact_email' => $contactEmail,
     'delivery_type' => $deliveryType,
     'total_price' => number_format($totalPrice, 2, '.', ''),
-    'estimated_delivery_date' => $estimatedDeliveryDate
+    'estimated_delivery_date' => $estimatedDeliveryDate,
+    'sms_sent' => $smsSent
 ];
 
 unset($_SESSION['send_order']);

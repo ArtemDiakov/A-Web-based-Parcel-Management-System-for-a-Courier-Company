@@ -60,7 +60,7 @@ function e($value): string
 
                         <div class="confirmation-info text-start mx-auto mb-4">
                             <div class="confirmation-info-row">
-                                <span>SMS confirmation sent</span>
+                                <span>SMS confirmation <?= !empty($lastOrder['sms_sent']) ? 'sent' : 'logged' ?></span>
                                 <strong><?= e($lastOrder['contact_phone']) ?></strong>
                             </div>
 

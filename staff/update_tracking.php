@@ -4,6 +4,7 @@ session_start();
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/csrf.php';
 require_once __DIR__ . '/../includes/auth.php';
+require_once __DIR__ . '/../includes/sms.php';
 
 requireRole(['staff', 'admin']);
 
@@ -70,7 +71,7 @@ if ($description !== '' && strlen($description) > 1000) {
 
 $orderResult = pg_query_params(
     $conn,
-    "SELECT id, current_status FROM public.orders WHERE UPPER(reference_number) = $1 LIMIT 1",
+    "SELECT id, current_status, contact_phone FROM public.orders WHERE UPPER(reference_number) = $1 LIMIT 1",
     [$reference]
 );
 
@@ -128,6 +129,16 @@ if (!$updateResult || !$trackingResult) {
     header('Location: /staff/order_view.php?reference=' . urlencode($reference));
     exit;
 }
+
+$statusText = str_replace('_', ' ', $status);
+
+$smsMessage = "ParcelPro: Your parcel {$reference} status is now {$statusText}.";
+
+if ($location !== null) {
+    $smsMessage .= " Location: {$location}.";
+}
+
+sendParcelSms($conn, (int)$order['id'], (string)$order['contact_phone'], $smsMessage);
 
 pg_query($conn, 'COMMIT');
 
