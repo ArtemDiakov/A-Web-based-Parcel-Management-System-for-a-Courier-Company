@@ -98,7 +98,25 @@ if ($status === $order['current_status'] && $description === '') {
 }
 
 if ($location === '') {
-    $location = null;
+    $_SESSION['staff_error'] = 'Please select the parcel location.';
+    header('Location: /staff/order_view.php?reference=' . urlencode($reference));
+    exit;
+}
+
+$validLocationResult = pg_query_params(
+    $conn,
+    "SELECT 1
+     FROM public.operating_areas
+     WHERE is_active = true
+       AND ($1 = city || ' (' || postcode || ')')
+     LIMIT 1",
+    [$location]
+);
+
+if (!$validLocationResult || pg_num_rows($validLocationResult) !== 1) {
+    $_SESSION['staff_error'] = 'Invalid parcel location selected.';
+    header('Location: /staff/order_view.php?reference=' . urlencode($reference));
+    exit;
 }
 
 if ($description === '') {

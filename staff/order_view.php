@@ -98,6 +98,16 @@ $allowedStatuses = [
     'returned_to_sender',
 ];
 
+$locationResult = pg_query(
+    $conn,
+    "SELECT city, postcode
+     FROM public.operating_areas
+     WHERE is_active = true
+     ORDER BY city, postcode"
+);
+
+$trackingLocations = $locationResult ? (pg_fetch_all($locationResult) ?: []) : [];
+
 if (($_SESSION['role'] ?? '') === 'admin') {
     $allowedStatuses[] = 'cancelled';
 }
@@ -238,13 +248,18 @@ if (($_SESSION['role'] ?? '') === 'admin') {
 
                                 <div class="mb-3">
                                     <label for="location" class="form-label">Location</label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="location"
-                                        name="location"
-                                        maxlength="150"
-                                        placeholder="e.g. Aberystwyth Depot">
+                                    <select class="form-select" id="location" name="location" required>
+                                        <option value="">Select current location</option>
+                                        <?php foreach ($trackingLocations as $trackingLocation): ?>
+                                            <?php
+                                            $locationLabel = $trackingLocation['city'] . ' (' . $trackingLocation['postcode'] . ')';
+                                            ?>
+                                            <option value="<?= e($locationLabel) ?>">
+                                                <?= e($locationLabel) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <div class="invalid-feedback">Please select the parcel location.</div>
                                 </div>
 
                                 <div class="mb-3">
