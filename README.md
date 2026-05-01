@@ -1,93 +1,142 @@
-# A Web-based Parcel Management System for a Courier Company
+# ParcelPro – Web-based Parcel Management System
 
+## Overview
 
+ParcelPro is a web-based parcel delivery management system developed using PHP and PostgreSQL. The system allows users to create parcel delivery orders, complete payments, track deliveries, and provides dedicated interfaces for staff and administrators. This project was developed and deployed on a Debian-based virtual machine using Apache.
 
-## Getting started
+---
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Structure
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+- technical-work/ → full system source code and database backup
+- documents/ → report source file, diagrams, and testing document
+- ai-prompts/ → summary of AI usage
 
-## Add your files
+---
 
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+## System Requirements
 
-```
-cd existing_repo
-git remote add origin https://gitlab.aber.ac.uk/ard38/a-web-based-parcel-management-system-for-a-courier-company.git
-git branch -M master
-git push -uf origin master
-```
+- PHP (8.x recommended)
+- PostgreSQL
+- Apache (or compatible web server)
+- Web browser
 
-## Integrate with your tools
+---
 
-* [Set up project integrations](https://gitlab.aber.ac.uk/ard38/a-web-based-parcel-management-system-for-a-courier-company/-/settings/integrations)
+## Setup Instructions
 
-## Collaborate with your team
+1. Place the project files into a web server directory (e.g. `/var/www/html/`).
+2. Configure database connection in:
+   - `includes/db.php`
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+3. Import the database:
 
-## Test and Deploy
+   ```
+   psql -U <username> -d <database_name> -f parcel_system_backup.sql
+   ```
 
-Use the built-in continuous integration in GitLab.
+4. Start the web server.
+5. Access the system via browser:
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+   ```
+   http://localhost/index.php
+   ```
 
-***
+For demonstration purposes, it is recommended to use the provided test accounts and example postcodes listed below.
 
-# Editing this README
+The database structure includes tables such as users, orders, payments, tracking_history, operating_areas, and sms_notifications.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+---
 
-## Suggestions for a good README
+## Access
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+The system is deployed on a university-hosted virtual machine and is accessible via:
 
-## Name
-Choose a self-explaining name for your project.
+https://debproj-ard38.teachvm.aber.ac.uk/index.php
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+Note:
+Access is restricted to authorised users within the university network or via VPN. External public access is not available. Markers have been granted access to the deployed system via university VM permissions.
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+---
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+## Test Accounts
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+### Admin
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+- Email: admin@test.com
+- Password: Admin2026!
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### Staff
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+- Email: staff@test.com
+- Password: Staff2026!
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+### Customer
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+- Email: user@test.com
+- Password: User2026!
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+(Note: These accounts may be adjusted depending on database content.)
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+---
 
-## License
-For open source projects, say how it is licensed.
+## Stripe Test Payment
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+Use the following card details for testing:
+
+- Card Number: **4242 4242 4242 4242**
+- Expiry: Any future date
+- CVC: Any 3 digits
+
+---
+
+## Supported Postcodes
+
+The system only accepts postcodes stored in the database. Example valid postcodes:
+
+- SY23 1AA
+- YO222QQ
+- YO16 6NN
+- YO13 3NN
+- WW134LL
+
+The system validates postcodes against the operating_areas table in the database. Only postcodes stored in this table are accepted. You can extend database using admin account - admindashboard -> operating areas section by adding a new postcode.
+
+---
+
+## SMS Notifications
+
+The system integrates with Twilio for SMS notifications.
+
+Note:
+
+- Messages are logged in the database.
+- Due to Twilio trial and regional restrictions, some messages may not be delivered, although all attempts are recorded in the database.
+
+---
+
+## Known Limitations
+
+- SMS delivery restricted by Twilio trial account
+- System accessible only via university VM / VPN
+- No account deletion functionality (GDPR limitation)
+
+---
+
+## Notes
+
+- All inputs are validated on client-side and server-side
+- Role-based access control is implemented
+- Session handling is used for multi-step processes
+
+---
+
+## AI Usage
+
+Some parts of the report writing and structuring were assisted using AI tools (ChatGPT), including:
+
+- wording refinement
+- structure suggestions
+- technical explanation improvements
+
+All implementation and design decisions were made independently.
