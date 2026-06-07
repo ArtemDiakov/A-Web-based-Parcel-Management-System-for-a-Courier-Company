@@ -2,7 +2,9 @@
 
 ## Overview
 
-ParcelPro is a web-based parcel delivery management system developed using PHP and PostgreSQL. The system allows users to create parcel delivery orders, complete payments, track deliveries, and provides dedicated interfaces for staff and administrators. This project was developed and deployed on a Debian-based virtual machine using Apache.
+ParcelPro is a web-based parcel delivery management system developed using PHP and PostgreSQL. The system allows users to create parcel delivery orders, complete payments, track deliveries, and provides dedicated interfaces for staff and administrators. This project was developed and deployed on a Debian-based virtual machine using Apache. 
+
+Note: Public demo unavailable due to university VM access restrictions. Local setup instructions and test accounts are provided below. I can demonstrate the system locally during interview.
 
 ---
 
